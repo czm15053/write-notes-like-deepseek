@@ -1,0 +1,11 @@
+{
+  "name": "write-notes-like-deepseek",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "像 DeepSeek 团队一样沉淀 Agent Notes",
+  "scripts": {
+    "verify-agent-note-tree": "tsx scripts/verify-agent-note-tree.ts",
+    "verify-agent-note-format": "tsx scripts/verify-agent-note-format.ts"
+  }
+}
