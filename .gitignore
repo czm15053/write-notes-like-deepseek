@@ -3,3 +3,5 @@ node_modules/
 docs/
 # 本 skill 的 self-dogfood 笔记不随包发布
 .agents/notes/
+# 7.8MB 脱机内联数据产物不纳入版本库
+demo.html
