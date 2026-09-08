@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 920" width="100%" height="100%">
+  <defs>
+    <pattern id="light-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#e2e8f0" stroke-width="0.75"/>
+    </pattern>
+    <filter id="soft-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&amp;display=swap');
+    text {
+      font-family: -apple-system, 'PingFang SC', 'Noto Sans SC', 'Segoe UI', 'JetBrains Mono', sans-serif;
+    }
+    .code { font-family: 'JetBrains Mono', monospace; }
+  </style>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#f8fafc"/>
+  <rect width="100%" height="100%" fill="url(#light-grid)"/>
+
+  <!-- HEADER -->
+  <g transform="translate(80, 40)">
+    <rect x="0" y="0" width="180" height="28" rx="14" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.2"/>
+    <text x="90" y="19" fill="#0369a1" font-size="12" font-weight="800" text-anchor="middle" letter-spacing="0.5">AI 工作实录现场</text>
+    <text x="0" y="68" fill="#0f172a" font-size="30" font-weight="800">装上 Skill 后：AI 怎么帮你立护栏？</text>
+    <text x="0" y="100" fill="#64748b" font-size="15">核心原则：意思靠人点头，结构靠脚本代劳（一次最多问 3 句，绝不打扰节奏）</text>
+  </g>
+
+  <!-- IDE WINDOW CONTAINER -->
+  <g transform="translate(80, 180)">
+    <rect x="0" y="0" width="1240" height="680" rx="20" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" filter="url(#soft-shadow)"/>
+
+    <!-- IDE Title Bar -->
+    <path d="M 0 20 Q 0 0 20 0 L 1220 0 Q 1240 0 1240 20 L 1240 46 L 0 46 Z" fill="#f1f5f9"/>
+    <circle cx="24" cy="23" r="6" fill="#ef4444"/>
+    <circle cx="44" cy="23" r="6" fill="#f59e0b"/>
+    <circle cx="64" cy="23" r="6" fill="#10b981"/>
+    <text x="620" y="28" fill="#475569" font-size="13" font-weight="700" text-anchor="middle" class="code">Cursor / Claude Code · 对话工作区</text>
+
+    <!-- LEFT: USER MESSAGE (360px) -->
+    <g transform="translate(30, 75)">
+      <rect x="0" y="0" width="380" height="150" rx="14" fill="#0f172a" filter="url(#soft-shadow)"/>
+      <g transform="translate(20, 24)">
+        <circle cx="16" cy="16" r="14" fill="#38bdf8"/>
+        <text x="16" y="21" fill="#0f172a" font-size="12" font-weight="800" text-anchor="middle">你</text>
+        <text x="42" y="22" fill="#94a3b8" font-size="13" font-weight="700">开发者说了一句话：</text>
+
+        <text x="0" y="66" fill="#f8fafc" font-size="15" font-weight="700">“把会话存储改用 SQLite，”</text>
+        <text x="0" y="94" fill="#f8fafc" font-size="15" font-weight="700">“顺便把读写接口重新理一下。”</text>
+      </g>
+
+      <!-- Human-in-the-loop Box -->
+      <g transform="translate(10, 175)">
+        <rect x="0" y="0" width="360" height="155" rx="12" fill="#fffbeb" stroke="#fde68a" stroke-width="1.5"/>
+        <text x="16" y="28" fill="#b45309" font-size="14" font-weight="800">💡 关键交互：意思必须靠人点头</text>
+        <text x="16" y="56" fill="#78350f" font-size="12.5">AI 不会擅自拍板定案。它会先向你复述：</text>
+        <text x="16" y="80" fill="#92400e" font-size="12.5">“选 SQLite 是因为并发锁死，</text>
+        <text x="16" y="104" fill="#92400e" font-size="12.5">并否决内存缓存（断电风险），对吗？”</text>
+        <text x="16" y="132" fill="#d97706" font-size="13" font-weight="800">👉 你点头确认后，才开始写代码和笔记！</text>
+      </g>
+    </g>
+
+    <!-- RIGHT: AI AUTOMATED ACTIONS (760px) -->
+    <g transform="translate(440, 75)">
+      <rect x="0" y="0" width="770" height="540" rx="14" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+
+      <!-- AI Header -->
+      <g transform="translate(24, 20)">
+        <circle cx="16" cy="16" r="14" fill="#7c3aed"/>
+        <text x="16" y="21" fill="#ffffff" font-size="12" font-weight="800" text-anchor="middle">AI</text>
+        <text x="42" y="22" fill="#0f172a" font-size="15" font-weight="800">懂规矩的 AI 助手（已加载 Skill）：</text>
+        <text x="42" y="44" fill="#059669" font-size="12" font-weight="700">“意图已获确认，正在自动实施机械护栏动作与代码施工...”</text>
+      </g>
+
+      <!-- 4 AUTOMATED ACTION CARDS -->
+      <!-- Action 1 -->
+      <g transform="translate(24, 80)">
+        <rect x="0" y="0" width="722" height="90" rx="10" fill="#ffffff" stroke="#bae6fd" stroke-width="1.2"/>
+        <circle cx="24" cy="24" r="10" fill="#0284c7"/>
+        <text x="24" y="28" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">1</text>
+        <text x="44" y="29" fill="#0369a1" font-size="14" font-weight="800">在代码入口自动打桩贴封条（In-Code Anchor）</text>
+        <rect x="20" y="44" width="682" height="34" rx="6" fill="#f0f9ff"/>
+        <text x="32" y="66" fill="#0284c7" font-size="11.5" class="code">// Note: 为什么选 SQLite 代替 JSONL 见 .agents/notes/implemented/feature/...sqlite.md</text>
+      </g>
+
+      <!-- Action 2 -->
+      <g transform="translate(24, 185)">
+        <rect x="0" y="0" width="722" height="115" rx="10" fill="#ffffff" stroke="#fde68a" stroke-width="1.2"/>
+        <circle cx="24" cy="24" r="10" fill="#d97706"/>
+        <text x="24" y="28" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">2</text>
+        <text x="44" y="29" fill="#92400e" font-size="14" font-weight="800">自动填好 200 字标准笔记（绝不漏写被否决方案）</text>
+
+        <rect x="20" y="44" width="682" height="58" rx="6" fill="#fffbeb"/>
+        <text x="32" y="64" fill="#b45309" font-size="11" font-weight="700">## Alternatives considered (AI 自动写强对手论据)：</text>
+        <text x="32" y="84" fill="#78350f" font-size="11">• 否决内存缓存：断电丢失索引存在数据撕裂风险；  • 否决外部PG：破坏本地CLI开箱体验</text>
+      </g>
+
+      <!-- Action 3 -->
+      <g transform="translate(24, 315)">
+        <rect x="0" y="0" width="722" height="90" rx="10" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.2"/>
+        <circle cx="24" cy="24" r="10" fill="#7c3aed"/>
+        <text x="24" y="28" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">3</text>
+        <text x="44" y="29" fill="#5b21b6" font-size="14" font-weight="800">本地自动跑 CI 门禁（verify-agent-note-*）</text>
+        <rect x="20" y="44" width="682" height="34" rx="6" fill="#faf5ff"/>
+        <text x="32" y="66" fill="#7c3aed" font-size="11.5" class="code">$ verify-agent-note-tree &amp;&amp; verify-format ➔ ok: 0 死链，0 未来时口吻，格式完全合格！</text>
+      </g>
+
+      <!-- Action 4 -->
+      <g transform="translate(24, 420)">
+        <rect x="0" y="0" width="722" height="95" rx="10" fill="#f0fdf4" stroke="#a7f3d0" stroke-width="1.5"/>
+        <circle cx="24" cy="24" r="10" fill="#059669"/>
+        <text x="24" y="28" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">4</text>
+        <text x="44" y="29" fill="#065f46" font-size="14" font-weight="800">代码与 Note 同一个 Git Commit 一起提交！</text>
+        <text x="44" y="58" fill="#047857" font-size="12">✔ 业务代码已写好  ✔ 入口封条已加上  ✔ 笔记已生成  ✔ 门禁已通过</text>
+        <text x="44" y="80" fill="#15803d" font-size="12.5" font-weight="700">🎉 “主人，改动已就绪，永久防撞护栏已立好，请直接审核合入！”</text>
+      </g>
+    </g>
+  </g>
+</svg>

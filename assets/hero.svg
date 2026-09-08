@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 720" width="100%" height="100%">
+  <defs>
+    <pattern id="light-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#e2e8f0" stroke-width="0.75"/>
+    </pattern>
+    <filter id="soft-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+    <marker id="arr-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#0284c7"/>
+    </marker>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&amp;display=swap');
+    text {
+      font-family: -apple-system, 'PingFang SC', 'Noto Sans SC', 'Segoe UI', 'JetBrains Mono', sans-serif;
+    }
+    .code { font-family: 'JetBrains Mono', monospace; }
+  </style>
+
+  <!-- Clean Off-white Background -->
+  <rect width="100%" height="100%" fill="#f8fafc"/>
+  <rect width="100%" height="100%" fill="url(#light-grid)"/>
+
+  <!-- HEADER -->
+  <g transform="translate(80, 42)">
+    <rect x="0" y="0" width="200" height="28" rx="14" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.2"/>
+    <text x="100" y="19" fill="#0369a1" font-size="12" font-weight="800" text-anchor="middle" letter-spacing="0.5">目录结构 · 架构全貌</text>
+    <text x="0" y="70" fill="#0f172a" font-size="32" font-weight="800">路径即状态：像 DeepSeek 一样沉淀决策目录树</text>
+    <text x="0" y="100" fill="#64748b" font-size="15">全库不搞任何全局 INDEX.md · 源码入口一行反向注释 · 笔记与代码同批原子提交</text>
+  </g>
+
+  <!-- MAIN CONTAINER (SPLIT: LEFT TREE 480px, RIGHT CODE/NOTE 680px) -->
+
+  <!-- LEFT: VS CODE STYLE EXPLORER TREE (480px) -->
+  <g transform="translate(80, 150)">
+    <rect x="0" y="0" width="480" height="525" rx="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.8" filter="url(#soft-shadow)"/>
+
+    <!-- Title Bar -->
+    <path d="M 0 18 Q 0 0 18 0 L 462 0 Q 480 0 480 18 L 480 50 L 0 50 Z" fill="#f1f5f9"/>
+    <circle cx="24" cy="25" r="5.5" fill="#ef4444"/>
+    <circle cx="42" cy="25" r="5.5" fill="#f59e0b"/>
+    <circle cx="60" cy="25" r="5.5" fill="#10b981"/>
+    <text x="80" y="30" fill="#334155" font-size="13" font-weight="800">PROJECT EXPLORER</text>
+    <text x="455" y="30" fill="#0284c7" font-size="11" font-weight="700" text-anchor="end">无锁无冲突</text>
+
+    <!-- Tree Content -->
+    <g transform="translate(24, 75)">
+      <!-- Root -->
+      <text x="0" y="18" fill="#0f172a" font-size="14" font-weight="800" class="code">📁 .agents/notes/</text>
+
+      <!-- Level 1: Lifecycles -->
+      <g transform="translate(18, 26)">
+        <!-- proposed -->
+        <text x="0" y="24" fill="#d97706" font-size="13" font-weight="700" class="code">├── 📁 proposed/</text>
+        <text x="175" y="24" fill="#b45309" font-size="11">（想法立项阶段）</text>
+
+        <!-- implemented (Active Highlight) -->
+        <g transform="translate(0, 36)">
+          <rect x="-8" y="0" width="426" height="235" rx="8" fill="#f0fdf4" stroke="#a7f3d0" stroke-width="1.2"/>
+          <text x="0" y="24" fill="#059669" font-size="13.5" font-weight="800" class="code">├── 📁 implemented/</text>
+          <text x="190" y="24" fill="#047857" font-size="11.5" font-weight="700">（已落地事实·现行法律）</text>
+
+          <!-- Level 2: Classes inside implemented -->
+          <g transform="translate(18, 32)">
+            <text x="0" y="20" fill="#0284c7" font-size="12" font-weight="700" class="code">├── 📁 feature/</text>
+            <text x="24" y="42" fill="#475569" font-size="11" class="code">└── 2026-08-05-agent-teams.md</text>
+
+            <text x="0" y="70" fill="#e11d48" font-size="12" font-weight="700" class="code">├── 📁 bug-fix/</text>
+            <text x="24" y="92" fill="#475569" font-size="11" class="code">└── 2026-07-31-python-settlement.md</text>
+
+            <text x="0" y="120" fill="#7c3aed" font-size="12" font-weight="700" class="code">├── 📁 architecture/</text>
+            <text x="24" y="142" fill="#475569" font-size="11" class="code">└── 2026-07-25-web-input-machine.md</text>
+
+            <text x="0" y="170" fill="#059669" font-size="12" font-weight="800" class="code">└── 📁 simplification/</text>
+            <text x="24" y="192" fill="#047857" font-size="11" font-weight="700" class="code">└── 2026-08-30-jsonl-only.md</text>
+          </g>
+        </g>
+
+        <!-- rejected & archived -->
+        <g transform="translate(0, 282)">
+          <text x="0" y="22" fill="#be123c" font-size="13" font-weight="700" class="code">├── 📁 rejected/</text>
+          <text x="175" y="22" fill="#9f1239" font-size="11">（被否决方案·防翻案）</text>
+
+          <text x="0" y="50" fill="#64748b" font-size="13" font-weight="700" class="code">└── 📁 archived/</text>
+          <text x="175" y="50" fill="#64748b" font-size="11">（被新决策完全取代冻结）</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- Bottom Tip -->
+    <g transform="translate(24, 465)">
+      <rect x="0" y="0" width="432" height="42" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+      <text x="216" y="26" fill="#0f172a" font-size="12" font-weight="700" text-anchor="middle">⚡ 纯路径即状态，天然杜绝 Git Merge 冲突！</text>
+    </g>
+  </g>
+
+  <!-- RIGHT: REAL CODE ANCHOR & NOTE PREVIEW (660px) -->
+  <g transform="translate(590, 150)">
+
+    <!-- CARD 1: IN-CODE ANCHOR (TOP 240px) -->
+    <g transform="translate(0, 0)">
+      <rect x="0" y="0" width="670" height="245" rx="18" fill="#ffffff" stroke="#bae6fd" stroke-width="1.8" filter="url(#soft-shadow)"/>
+      <path d="M 0 18 Q 0 0 18 0 L 652 0 Q 670 0 670 18 L 670 48 L 0 48 Z" fill="#f0f9ff"/>
+      <circle cx="24" cy="24" r="6" fill="#0284c7"/>
+      <text x="40" y="29" fill="#0369a1" font-size="14" font-weight="800">1. 源码关键入口：一行黄色封条注释</text>
+
+      <g transform="translate(24, 66)">
+        <text x="0" y="18" fill="#475569" font-size="12.5">在核心接口或关键函数上方打桩，AI 读代码时 100% 被迫先读此行：</text>
+
+        <g transform="translate(0, 32)">
+          <rect x="0" y="0" width="622" height="96" rx="10" fill="#0f172a"/>
+          <text x="20" y="28" fill="#38bdf8" font-size="12" font-weight="700" class="code">// Note: 为什么选 SQLite 代替 JSONL</text>
+          <text x="20" y="50" fill="#38bdf8" font-size="12" class="code">// 见 .agents/notes/implemented/feature/2026-08-23-sqlite.md</text>
+          <text x="20" y="78" fill="#e2e8f0" font-size="12.5" class="code">export class <tspan fill="#facc15">SessionStore</tspan> { ... }</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- ARROW CONNECTING CODE TO NOTE -->
+    <g transform="translate(310, 245)">
+      <line x1="25" y1="0" x2="25" y2="30" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arr-blue)"/>
+    </g>
+
+    <!-- CARD 2: NOTE 4-SECTION PREVIEW (BOTTOM 250px) -->
+    <g transform="translate(0, 280)">
+      <rect x="0" y="0" width="670" height="245" rx="18" fill="#ffffff" stroke="#a7f3d0" stroke-width="1.8" filter="url(#soft-shadow)"/>
+      <path d="M 0 18 Q 0 0 18 0 L 652 0 Q 670 0 670 18 L 670 48 L 0 48 Z" fill="#f0fdf4"/>
+      <circle cx="24" cy="24" r="6" fill="#059669"/>
+      <text x="40" y="29" fill="#065f46" font-size="14" font-weight="800">2. 对应 Note 正文：极其精简，只填 4 个空（约200字）</text>
+
+      <g transform="translate(24, 65)">
+        <rect x="0" y="0" width="622" height="155" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+
+        <g transform="translate(20, 22)">
+          <text x="0" y="16" fill="#b45309" font-size="12" font-weight="800" class="code">## Problem</text>
+          <text x="110" y="16" fill="#334155" font-size="12">多进程并发写 JSONL 严重死锁，全量扫描延迟 &gt;800ms</text>
+
+          <text x="0" y="44" fill="#059669" font-size="12" font-weight="800" class="code">## Decision</text>
+          <text x="110" y="44" fill="#334155" font-size="12">改用 SQLite WAL 模式，核心表建联合索引（强制现在时客观事实）</text>
+
+          <text x="0" y="72" fill="#d97706" font-size="12" font-weight="800" class="code">## Alternatives</text>
+          <text x="110" y="72" fill="#b45309" font-size="12" font-weight="700">★ 必填：写清为什么放弃内存缓存与外部 Postgres</text>
+
+          <text x="0" y="100" fill="#7c3aed" font-size="12" font-weight="800" class="code">## Consequences</text>
+          <text x="110" y="100" fill="#334155" font-size="12">收益：延迟降至 10ms 以内； 代价：包体积增加 15MB</text>
+        </g>
+      </g>
+    </g>
+
+  </g>
+</svg>

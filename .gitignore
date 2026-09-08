@@ -1,3 +1,5 @@
 node_modules/
 .DS_Store
 docs/
+# 本 skill 的 self-dogfood 笔记不随包发布
+.agents/notes/

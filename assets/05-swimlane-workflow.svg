@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 880" width="100%" height="100%">
+  <defs>
+    <pattern id="light-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#e2e8f0" stroke-width="0.75"/>
+    </pattern>
+    <filter id="soft-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+
+    <marker id="loop-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#0284c7"/>
+    </marker>
+    <marker id="loop-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#059669"/>
+    </marker>
+    <marker id="loop-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#7c3aed"/>
+    </marker>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');
+    text {
+      font-family: -apple-system, 'PingFang SC', 'Noto Sans SC', 'Segoe UI', 'JetBrains Mono', sans-serif;
+    }
+    .code { font-family: 'JetBrains Mono', monospace; }
+  </style>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#f8fafc"/>
+  <rect width="100%" height="100%" fill="url(#light-grid)"/>
+
+  <!-- HEADER -->
+  <g transform="translate(60, 45)">
+    <rect x="0" y="0" width="190" height="28" rx="14" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1.2"/>
+    <text x="95" y="19" fill="#6d28d9" font-size="12" font-weight="700" text-anchor="middle" letter-spacing="0.5">图 5 · 真实工程闭环</text>
+    <text x="0" y="68" fill="#0f172a" font-size="28" font-weight="800">DSH 源码闭环回路：代码与 Note 是怎么自我维持的？</text>
+    <text x="0" y="98" fill="#475569" font-size="14.5">挂指针 ➔ 咬合上下文 ➔ 双轨提交 ➔ CI 机械验货 ➔ 合入主干成为下一代 AI 的基线</text>
+  </g>
+
+  <!-- MAIN CIRCULAR LOOP CONTAINER -->
+  <g transform="translate(60, 150)">
+    <rect x="0" y="0" width="1280" height="660" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.6" filter="url(#soft-shadow)"/>
+
+    <!-- STEP 1 (TOP-LEFT): IN-CODE ANCHOR -->
+    <g transform="translate(50, 40)">
+      <rect x="0" y="0" width="540" height="220" rx="12" fill="#ffffff" stroke="#bae6fd" stroke-width="2" filter="url(#soft-shadow)"/>
+      <path d="M 0 12 Q 0 0 12 0 L 528 0 Q 540 0 540 12 L 540 44 L 0 44 Z" fill="#f0f9ff"/>
+      <circle cx="22" cy="22" r="10" fill="#0284c7"/>
+      <text x="22" y="26" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">1</text>
+      <text x="42" y="27" fill="#0369a1" font-size="14" font-weight="800">代码挂物理指针（In-Code Pointer）</text>
+
+      <g transform="translate(20, 60)">
+        <text x="0" y="16" fill="#0f172a" font-size="12.5" font-weight="700">DSH 源码真实写法（全库共 816 处）：</text>
+        <rect x="0" y="26" width="500" height="64" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="12" y="48" fill="#0284c7" font-size="11" class="code">/** ui-conversation/src/client/input/decorations.ts:3 */</text>
+        <text x="12" y="68" fill="#0369a1" font-size="11" class="code">* see .agents/notes/implemented/.../web-input-machine.md</text>
+
+        <text x="0" y="112" fill="#475569" font-size="12">💡 作用：任何 AI 只要来读这个函数，这行注释就 100% 强行灌入 Context，</text>
+        <text x="0" y="132" fill="#0284c7" font-size="12" font-weight="700">不靠 AI 自觉、不用向量检索，物理级确定性拦截！</text>
+      </g>
+    </g>
+
+    <!-- ARROW 1 -> 2 (TOP HORIZONTAL) -->
+    <path d="M 600 150 L 680 150" stroke="#0284c7" stroke-width="3" marker-end="url(#loop-blue)"/>
+    <rect x="612" y="125" width="60" height="22" rx="4" fill="#e0f2fe"/>
+    <text x="642" y="140" fill="#0369a1" font-size="10.5" font-weight="700" text-anchor="middle">顺藤摸瓜</text>
+
+    <!-- STEP 2 (TOP-RIGHT): CONTEXT INGESTION -->
+    <g transform="translate(690, 40)">
+      <rect x="0" y="0" width="540" height="220" rx="12" fill="#ffffff" stroke="#fde68a" stroke-width="2" filter="url(#soft-shadow)"/>
+      <path d="M 0 12 Q 0 0 12 0 L 528 0 Q 540 0 540 12 L 540 44 L 0 44 Z" fill="#fffbeb"/>
+      <circle cx="22" cy="22" r="10" fill="#d97706"/>
+      <text x="22" y="26" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">2</text>
+      <text x="42" y="27" fill="#92400e" font-size="14" font-weight="800">AI 上下文自动咬合（Learn Constraints）</text>
+
+      <g transform="translate(20, 60)">
+        <text x="0" y="16" fill="#0f172a" font-size="12.5" font-weight="700">AI 读取对应 Note，立刻获知“历史排雷记录”：</text>
+        <rect x="0" y="26" width="500" height="64" rx="6" fill="#fffbeb" stroke="#fde68a" stroke-width="1"/>
+        <text x="12" y="46" fill="#b45309" font-size="11" font-weight="700">## Alternatives considered (被否决方案)：</text>
+        <text x="12" y="68" fill="#78350f" font-size="10.5">• contenteditable: 兼容性极差，中文拼音输入法吞字卡死，严禁乱改！</text>
+
+        <text x="0" y="112" fill="#475569" font-size="12">💡 作用：彻底消除 AI 的无状态失忆！新 AI 即使没有历史记忆，</text>
+        <text x="0" y="132" fill="#b45309" font-size="12" font-weight="700">读完也立刻收回想盲目重构的手，老实遵守已落地的架构法案！</text>
+      </g>
+    </g>
+
+    <!-- ARROW 2 -> 3 (RIGHT VERTICAL DOWN) -->
+    <path d="M 960 270 L 960 340" stroke="#059669" stroke-width="3" marker-end="url(#loop-green)"/>
+    <rect x="925" y="295" width="70" height="22" rx="4" fill="#dcfce7"/>
+    <text x="960" y="310" fill="#065f46" font-size="10.5" font-weight="700" text-anchor="middle">规范施工</text>
+
+    <!-- STEP 3 (BOTTOM-RIGHT): ATOMIC COMMIT -->
+    <g transform="translate(690, 350)">
+      <rect x="0" y="0" width="540" height="230" rx="12" fill="#ffffff" stroke="#a7f3d0" stroke-width="2" filter="url(#soft-shadow)"/>
+      <path d="M 0 12 Q 0 0 12 0 L 528 0 Q 540 0 540 12 L 540 44 L 0 44 Z" fill="#f0fdf4"/>
+      <circle cx="22" cy="22" r="10" fill="#059669"/>
+      <text x="22" y="26" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">3</text>
+      <text x="42" y="27" fill="#065f46" font-size="14" font-weight="800">双轨原子提交（Atomic Commit）</text>
+
+      <g transform="translate(20, 60)">
+        <text x="0" y="16" fill="#0f172a" font-size="12.5" font-weight="700">业务代码改动与 Note 事实同步更新：</text>
+        <rect x="0" y="26" width="500" height="74" rx="6" fill="#f0fdf4" stroke="#a7f3d0" stroke-width="1"/>
+        <text x="12" y="46" fill="#14532d" font-size="11">• 修改业务代码：例如 `decorations.ts` 更新方法逻辑</text>
+        <text x="12" y="66" fill="#059669" font-size="11" font-weight="700">• 同步更新对应 Note：事实变了就地更新，不留两本账！</text>
+        <text x="12" y="86" fill="#14532d" font-size="11">• 必须打入同一个 Git PR / Commit，一步到位生效！</text>
+
+        <text x="0" y="122" fill="#475569" font-size="12">💡 作用：代码与文档同生共死，彻底粉碎“代码改了三版、文档停在半年前”</text>
+        <text x="0" y="142" fill="#059669" font-size="12" font-weight="700">的陈年腐烂恶疾！</text>
+      </g>
+    </g>
+
+    <!-- ARROW 3 -> 4 (BOTTOM HORIZONTAL LEFT) -->
+    <path d="M 680 460 L 600 460" stroke="#7c3aed" stroke-width="3" marker-end="url(#loop-purple)"/>
+    <rect x="612" y="435" width="60" height="22" rx="4" fill="#f3e8ff"/>
+    <text x="642" y="450" fill="#6d28d9" font-size="10.5" font-weight="700" text-anchor="middle">机器安检</text>
+
+    <!-- STEP 4 (BOTTOM-LEFT): CI GATES -->
+    <g transform="translate(50, 350)">
+      <rect x="0" y="0" width="540" height="230" rx="12" fill="#ffffff" stroke="#ddd6fe" stroke-width="2" filter="url(#soft-shadow)"/>
+      <path d="M 0 12 Q 0 0 12 0 L 528 0 Q 540 0 540 12 L 540 44 L 0 44 Z" fill="#faf5ff"/>
+      <circle cx="22" cy="22" r="10" fill="#7c3aed"/>
+      <text x="22" y="26" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">4</text>
+      <text x="42" y="27" fill="#5b21b6" font-size="14" font-weight="800">CI 门禁机械把关（verify-agent-note-*）</text>
+
+      <g transform="translate(20, 60)">
+        <text x="0" y="16" fill="#0f172a" font-size="12.5" font-weight="700">提交代码时，脚本自动把关每一项契约：</text>
+        <rect x="0" y="26" width="500" height="74" rx="6" fill="#faf5ff" stroke="#ddd6fe" stroke-width="1"/>
+        <text x="12" y="44" fill="#5b21b6" font-size="11" class="code">verify-agent-note-tree</text>
+        <text x="210" y="44" fill="#059669" font-size="11">✔ 6大分类正确 · 链接全通无死链</text>
+        <text x="12" y="64" fill="#5b21b6" font-size="11" class="code">verify-agent-note-format</text>
+        <text x="210" y="64" fill="#059669" font-size="11">✔ 严禁未来时(Plan) · 必填Alternatives</text>
+        <text x="12" y="84" fill="#5b21b6" font-size="11" class="code">prose-checklist</text>
+        <text x="210" y="84" fill="#059669" font-size="11">✔ 剔除会话废话 · 保持纯硬核事实</text>
+
+        <text x="0" y="122" fill="#475569" font-size="12">💡 作用：机器严格守门，偷懒敷衍或画大饼直接挂掉拒绝合并，</text>
+        <text x="0" y="142" fill="#7c3aed" font-size="12" font-weight="700">确保合入主干的代码与 Note 资产 100% 真实可用！</text>
+      </g>
+    </g>
+
+    <!-- ARROW 4 -> 1 (LEFT VERTICAL UP: CLOSING THE LOOP!) -->
+    <path d="M 320 340 L 320 270" stroke="#0284c7" stroke-width="3" marker-end="url(#loop-blue)"/>
+    <rect x="265" y="295" width="110" height="22" rx="4" fill="#e0f2fe"/>
+    <text x="320" y="310" fill="#0369a1" font-size="10.5" font-weight="700" text-anchor="middle">合入主干，成为新基线</text>
+  </g>
+</svg>

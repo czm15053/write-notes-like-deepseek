@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 880" width="100%" height="100%">
+  <defs>
+    <pattern id="light-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#e2e8f0" stroke-width="0.75"/>
+    </pattern>
+    <filter id="soft-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+
+    <marker id="arr-rose" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e11d48"/>
+    </marker>
+    <marker id="arr-emerald" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');
+    text {
+      font-family: -apple-system, 'PingFang SC', 'Noto Sans SC', 'Segoe UI', 'JetBrains Mono', sans-serif;
+    }
+    .code { font-family: 'JetBrains Mono', monospace; }
+  </style>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#f8fafc"/>
+  <rect width="100%" height="100%" fill="url(#light-grid)"/>
+
+  <!-- HEADER -->
+  <g transform="translate(60, 45)">
+    <rect x="0" y="0" width="220" height="28" rx="14" fill="#ffe4e6" stroke="#e11d48" stroke-width="1.2"/>
+    <text x="110" y="19" fill="#be123c" font-size="12" font-weight="700" text-anchor="middle" letter-spacing="0.5">图 6 · Git 并发合并对决</text>
+    <text x="0" y="68" fill="#0f172a" font-size="28" font-weight="800">Git 真实合并对决：为什么 DSH 源码里严禁 INDEX.md？</text>
+    <text x="0" y="98" fill="#475569" font-size="14.5">左边看传统 ADR 为什么在多 Agent 时代必然卡死 ➔ 右边看 DeepSeek 纯路径设计如何做到 0 冲突自动合入</text>
+  </g>
+
+  <!-- LEFT: TRADITIONAL ADR (INDEX CONFLICT) -->
+  <g transform="translate(60, 155)">
+    <rect x="0" y="0" width="610" height="660" rx="16" fill="#ffffff" stroke="#fecdd3" stroke-width="2" filter="url(#soft-shadow)"/>
+    <path d="M 0 16 Q 0 0 16 0 L 594 0 Q 610 0 610 16 L 610 52 L 0 52 Z" fill="#fff1f2"/>
+    <circle cx="26" cy="26" r="7" fill="#e11d48"/>
+    <text x="44" y="32" fill="#be123c" font-size="16.5" font-weight="800">❌ 传统 ADR 做法：大家争抢修改同一个 INDEX.md</text>
+
+    <g transform="translate(24, 76)">
+      <!-- Git Branch Visualization (Traditional) -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="562" height="150" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+        <text x="16" y="24" fill="#0f172a" font-size="12" font-weight="800">Git 分支合并现场：</text>
+
+        <!-- Main commit -->
+        <circle cx="50" cy="80" r="14" fill="#0f172a"/>
+        <text x="50" y="85" fill="#ffffff" font-size="10" font-weight="700" text-anchor="middle">main</text>
+
+        <!-- Branch A -->
+        <path d="M 64 72 Q 130 40 180 40" fill="none" stroke="#64748b" stroke-width="2"/>
+        <circle cx="190" cy="40" r="12" fill="#f1f5f9" stroke="#0284c7" stroke-width="2"/>
+        <text x="210" y="44" fill="#0284c7" font-size="11" font-weight="700">Agent A：在 INDEX.md 底部追加 042 号</text>
+
+        <!-- Branch B -->
+        <path d="M 64 88 Q 130 120 180 120" fill="none" stroke="#64748b" stroke-width="2"/>
+        <circle cx="190" cy="120" r="12" fill="#f1f5f9" stroke="#d97706" stroke-width="2"/>
+        <text x="210" y="124" fill="#d97706" font-size="11" font-weight="700">Agent B：也在 INDEX.md 底部追加 042 号</text>
+
+        <!-- Merge collision arrow -->
+        <path d="M 440 40 Q 480 80 500 80" fill="none" stroke="#e11d48" stroke-width="2"/>
+        <path d="M 440 120 Q 480 80 500 80" fill="none" stroke="#e11d48" stroke-width="2" marker-end="url(#arr-rose)"/>
+      </g>
+
+      <!-- Conflict Code Box -->
+      <g transform="translate(0, 168)">
+        <rect x="0" y="0" width="562" height="155" rx="10" fill="#fff1f2" stroke="#e11d48" stroke-width="1.8"/>
+        <text x="16" y="24" fill="#be123c" font-size="12" font-weight="800">💥 合并到 main 时爆发灾难性冲突：</text>
+        <text x="16" y="46" fill="#be123c" font-size="11" class="code">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD (Agent A 分支已合入)</text>
+        <text x="16" y="68" fill="#1e293b" font-size="10.5" class="code">| 042 | 2026-09-01 | Web输入机重构方案 |</text>
+        <text x="16" y="90" fill="#be123c" font-size="11" class="code">======= (Agent B 试图合入相同行)</text>
+        <text x="16" y="112" fill="#1e293b" font-size="10.5" class="code">| 042 | 2026-09-01 | JSONL 会话持久化方案 |</text>
+        <text x="16" y="136" fill="#be123c" font-size="11.5" font-weight="800" class="code">&gt;&gt;&gt;&gt;&gt;&gt;&gt; CONFLICT (content): Merge conflict in docs/INDEX.md</text>
+      </g>
+
+      <!-- Pain Summary Box -->
+      <g transform="translate(0, 340)">
+        <rect x="0" y="0" width="562" height="225" rx="10" fill="#fff1f2" stroke="#fda4af" stroke-width="1.4"/>
+        <text x="18" y="30" fill="#be123c" font-size="14.5" font-weight="800">致命瓶颈：自动化流水线当场瘫痪！</text>
+        <text x="18" y="58" fill="#9f1239" font-size="12">• 两个独立的 AI 本来改的代码毫无关系，却因为这个总表在 Git 锁死。</text>
+        <text x="18" y="86" fill="#9f1239" font-size="12">• 自动化多 Agent 流水线无法自动合并，必须人工介入手动解冲突！</text>
+        <text x="18" y="114" fill="#9f1239" font-size="12">• 如果每天跑几十个 Agent 任务，人类工程师将被无休止的合并冲突逼疯。</text>
+        <text x="18" y="152" fill="#be123c" font-size="13" font-weight="800">👉 结局：全局索引文件直接抹杀了多 Agent 并行开发的最大红利！</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- RIGHT: DEEPSEEK PATH-AS-STATE (CLEAN AUTO MERGE) -->
+  <g transform="translate(730, 155)">
+    <rect x="0" y="0" width="610" height="660" rx="16" fill="#ffffff" stroke="#a7f3d0" stroke-width="2" filter="url(#soft-shadow)"/>
+    <path d="M 0 16 Q 0 0 16 0 L 594 0 Q 610 0 610 16 L 610 52 L 0 52 Z" fill="#f0fdf4"/>
+    <circle cx="26" cy="26" r="7" fill="#059669"/>
+    <text x="44" y="32" fill="#065f46" font-size="16.5" font-weight="800">✔ DeepSeek 纯路径设计：每个人创建自己的独立叶子</text>
+
+    <g transform="translate(24, 76)">
+      <!-- Git Branch Visualization (DeepSeek) -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="562" height="150" rx="10" fill="#f8fafc" stroke="#a7f3d0" stroke-width="1.4"/>
+        <text x="16" y="24" fill="#065f46" font-size="12" font-weight="800">Git 干净无冲突自动合并现场：</text>
+
+        <!-- Main commit -->
+        <circle cx="50" cy="80" r="14" fill="#0f172a"/>
+        <text x="50" y="85" fill="#ffffff" font-size="10" font-weight="700" text-anchor="middle">main</text>
+
+        <!-- Branch A -->
+        <path d="M 64 72 Q 130 40 180 40" fill="none" stroke="#059669" stroke-width="2"/>
+        <circle cx="190" cy="40" r="12" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+        <text x="210" y="44" fill="#065f46" font-size="11" font-weight="700">Agent A：只创建自己的 `architecture/...-web.md`</text>
+
+        <!-- Branch B -->
+        <path d="M 64 88 Q 130 120 180 120" fill="none" stroke="#059669" stroke-width="2"/>
+        <circle cx="190" cy="120" r="12" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+        <text x="210" y="124" fill="#065f46" font-size="11" font-weight="700">Agent B：只创建自己的 `simplification/...-jsonl.md`</text>
+
+        <!-- Auto Merge arrow to Main -->
+        <path d="M 460 40 Q 490 80 520 80" fill="none" stroke="#059669" stroke-width="2"/>
+        <path d="M 460 120 Q 490 80 520 80" fill="none" stroke="#059669" stroke-width="2" marker-end="url(#arr-emerald)"/>
+      </g>
+
+      <!-- Clean Merge Output Box -->
+      <g transform="translate(0, 168)">
+        <rect x="0" y="0" width="562" height="155" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="1.8"/>
+        <text x="16" y="24" fill="#065f46" font-size="12" font-weight="800">✔ Git 自动三向合并（Clean Auto-Merge）：</text>
+        <text x="16" y="50" fill="#14532d" font-size="11" class="code">$ git merge branch-b</text>
+        <text x="16" y="72" fill="#047857" font-size="11" class="code">Auto-merging .agents/notes/</text>
+        <text x="16" y="94" fill="#047857" font-size="11" class="code">Merge made by the 'ort' strategy.</text>
+        <text x="16" y="116" fill="#059669" font-size="11.5" font-weight="700" class="code"> 1 file changed, 45 insertions(+) ➔ 0 CONFLICTS!</text>
+        <text x="16" y="138" fill="#15803d" font-size="11" font-weight="700">⚡ 秒级自动合入 master，完全不需要人类插手！</text>
+      </g>
+
+      <!-- Benefit Summary Box -->
+      <g transform="translate(0, 340)">
+        <rect x="0" y="0" width="562" height="225" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.4"/>
+        <text x="18" y="28" fill="#065f46" font-size="14.5" font-weight="800">🚀 DSH 源码铁证：这就是为什么写死禁止 INDEX.md</text>
+        <text x="18" y="56" fill="#047857" font-size="11.5">• DSH 脚本第 40 行写死：<tspan class="code" font-weight="700">INDEX.md — centralized indexes are forbidden!</tspan></text>
+        <text x="18" y="80" fill="#047857" font-size="11.5">• <tspan font-weight="700">物理绝对正交</tspan>：路径就是分类，每个 Note 是独立文件，合并互不相交。</text>
+        <text x="18" y="104" fill="#047857" font-size="11.5">• <tspan font-weight="700">海量并行战绩</tspan>：DSH 跑了 1,742 篇 Note，流水线 0 次因为索引冲突阻塞！</text>
+        <text x="18" y="142" fill="#065f46" font-size="12.5" font-weight="800">👉 找笔记怎么找？直接用代码搜索，或双击打开本项目的 build-board 看板！</text>
+      </g>
+    </g>
+  </g>
+</svg>

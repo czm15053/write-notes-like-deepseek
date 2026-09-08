@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" width="100%" height="100%">
+  <defs>
+    <pattern id="light-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#e2e8f0" stroke-width="0.75"/>
+    </pattern>
+    <filter id="soft-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&amp;display=swap');
+    text {
+      font-family: -apple-system, 'PingFang SC', 'Noto Sans SC', 'Segoe UI', 'JetBrains Mono', sans-serif;
+    }
+    .code { font-family: 'JetBrains Mono', monospace; }
+  </style>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#f8fafc"/>
+  <rect width="100%" height="100%" fill="url(#light-grid)"/>
+
+  <!-- HEADER -->
+  <g transform="translate(80, 50)">
+    <rect x="0" y="0" width="150" height="28" rx="14" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.2"/>
+    <text x="75" y="19" fill="#0369a1" font-size="12" font-weight="800" text-anchor="middle" letter-spacing="0.5">图 2 · 分类大地图</text>
+    <text x="0" y="70" fill="#0f172a" font-size="32" font-weight="800">到底哪些改动要写笔记？就这 6 种情况！</text>
+    <text x="0" y="104" fill="#64748b" font-size="16">路径格式：{状态}/{种类}/日期-主题.md · 就这 6 个固定文件夹，多建一个 CI 都会打回</text>
+  </g>
+
+  <!-- 6 BENTO CARDS (2 ROWS x 3 COLS) - ULTRA LEAN -->
+
+  <!-- ROW 1 -->
+  <!-- 1. feature -->
+  <g transform="translate(80, 160)">
+    <rect x="0" y="0" width="380" height="260" rx="16" fill="#ffffff" stroke="#bae6fd" stroke-width="1.8" filter="url(#soft-shadow)"/>
+    <path d="M 0 16 Q 0 0 16 0 L 364 0 Q 380 0 380 16 L 380 56 L 0 56 Z" fill="#f0f9ff"/>
+
+    <rect x="18" y="16" width="76" height="24" rx="5" fill="#e0f2fe"/>
+    <text x="56" y="32" fill="#0284c7" font-size="12" font-weight="800" text-anchor="middle" class="code">feature</text>
+    <text x="106" y="35" fill="#0369a1" font-size="17" font-weight="800">🌟 加了新功能</text>
+
+    <g transform="translate(20, 80)">
+      <text x="0" y="18" fill="#0f172a" font-size="15" font-weight="800">用户看得见的新能力与非显然选择：</text>
+      <rect x="0" y="36" width="340" height="115" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.2"/>
+      <g transform="translate(16, 24)">
+        <text x="0" y="18" fill="#0284c7" font-size="13" font-weight="700">DSH 真实案例：</text>
+        <text x="0" y="44" fill="#334155" font-size="12.5">• 存储层从文本换成 SQLite</text>
+        <text x="0" y="68" fill="#334155" font-size="12.5">• 多 Agent 组队与共享任务认领</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- 2. bug-fix -->
+  <g transform="translate(510, 160)">
+    <rect x="0" y="0" width="380" height="260" rx="16" fill="#ffffff" stroke="#fecdd3" stroke-width="1.8" filter="url(#soft-shadow)"/>
+    <path d="M 0 16 Q 0 0 16 0 L 364 0 Q 380 0 380 16 L 380 56 L 0 56 Z" fill="#fff1f2"/>
+
+    <rect x="18" y="16" width="76" height="24" rx="5" fill="#ffe4e6"/>
+    <text x="56" y="32" fill="#e11d48" font-size="12" font-weight="800" text-anchor="middle" class="code">bug-fix</text>
+    <text x="106" y="35" fill="#be123c" font-size="17" font-weight="800">🐛 踩坑大修复</text>
+
+    <g transform="translate(20, 80)">
+      <text x="0" y="18" fill="#0f172a" font-size="15" font-weight="800">解决隐蔽故障，复盘把教训焊死：</text>
+      <rect x="0" y="36" width="340" height="115" rx="10" fill="#f8fafc" stroke="#fecdd3" stroke-width="1.2"/>
+      <g transform="translate(16, 24)">
+        <text x="0" y="18" fill="#e11d48" font-size="13" font-weight="700">DSH 真实案例：</text>
+        <text x="0" y="44" fill="#334155" font-size="12.5">• 修复多进程退火竞争导致的死锁</text>
+        <text x="0" y="68" fill="#334155" font-size="12.5">• 修复 Python 进程结算隔离崩溃</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- 3. simplification -->
+  <g transform="translate(940, 160)">
+    <rect x="0" y="0" width="380" height="260" rx="16" fill="#ffffff" stroke="#a7f3d0" stroke-width="1.8" filter="url(#soft-shadow)"/>
+    <path d="M 0 16 Q 0 0 16 0 L 364 0 Q 380 0 380 16 L 380 56 L 0 56 Z" fill="#f0fdf4"/>
+
+    <rect x="18" y="16" width="108" height="24" rx="5" fill="#dcfce7"/>
+    <text x="72" y="32" fill="#059669" font-size="11" font-weight="800" text-anchor="middle" class="code">simplification</text>
+    <text x="136" y="35" fill="#065f46" font-size="17" font-weight="800">✂️ 删繁就简</text>
+
+    <g transform="translate(20, 80)">
+      <text x="0" y="18" fill="#0f172a" font-size="15" font-weight="800">只删不增！裁撤历史多余包袱：</text>
+      <rect x="0" y="36" width="340" height="115" rx="10" fill="#f8fafc" stroke="#a7f3d0" stroke-width="1.2"/>
+      <g transform="translate(16, 24)">
+        <text x="0" y="18" fill="#059669" font-size="13" font-weight="700">DSH 真实案例：</text>
+        <text x="0" y="44" fill="#334155" font-size="12.5">• 删掉 SQLite 存储层，全量瘦身成 JSONL</text>
+        <text x="0" y="68" fill="#334155" font-size="12.5">• 删掉手写工具，直接复用系统命令</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ROW 2 -->
+  <!-- 4. architecture -->
+  <g transform="translate(80, 455)">
+    <rect x="0" y="0" width="380" height="260" rx="16" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.8" filter="url(#soft-shadow)"/>
+    <path d="M 0 16 Q 0 0 16 0 L 364 0 Q 380 0 380 16 L 380 56 L 0 56 Z" fill="#faf5ff"/>
+
+    <rect x="18" y="16" width="94" height="24" rx="5" fill="#f3e8ff"/>
+    <text x="65" y="32" fill="#7c3aed" font-size="11" font-weight="800" text-anchor="middle" class="code">architecture</text>
+    <text x="122" y="35" fill="#5b21b6" font-size="17" font-weight="800">🏛️ 骨架与分家</text>
+
+    <g transform="translate(20, 80)">
+      <text x="0" y="18" fill="#0f172a" font-size="15" font-weight="800">模块物理切分、包之间的边界：</text>
+      <rect x="0" y="36" width="340" height="115" rx="10" fill="#f8fafc" stroke="#ddd6fe" stroke-width="1.2"/>
+      <g transform="translate(16, 24)">
+        <text x="0" y="18" fill="#7c3aed" font-size="13" font-weight="700">DSH 真实案例：</text>
+        <text x="0" y="44" fill="#334155" font-size="12.5">• 规定插件只准调接口，绝不碰实现</text>
+        <text x="0" y="68" fill="#334155" font-size="12.5">• 网页端功能拆成独立包单独发布</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- 5. process -->
+  <g transform="translate(510, 455)">
+    <rect x="0" y="0" width="380" height="260" rx="16" fill="#ffffff" stroke="#fde68a" stroke-width="1.8" filter="url(#soft-shadow)"/>
+    <path d="M 0 16 Q 0 0 16 0 L 364 0 Q 380 0 380 16 L 380 56 L 0 56 Z" fill="#fffbeb"/>
+
+    <rect x="18" y="16" width="76" height="24" rx="5" fill="#fef3c7"/>
+    <text x="56" y="32" fill="#d97706" font-size="12" font-weight="800" text-anchor="middle" class="code">process</text>
+    <text x="106" y="35" fill="#92400e" font-size="17" font-weight="800">⚙️ 协作与工具</text>
+
+    <g transform="translate(20, 80)">
+      <text x="0" y="18" fill="#0f172a" font-size="15" font-weight="800">围绕代码运转的检查、发布规矩：</text>
+      <rect x="0" y="36" width="340" height="115" rx="10" fill="#f8fafc" stroke="#fde68a" stroke-width="1.2"/>
+      <g transform="translate(16, 24)">
+        <text x="0" y="18" fill="#d97706" font-size="13" font-weight="700">DSH 真实案例：</text>
+        <text x="0" y="44" fill="#334155" font-size="12.5">• 强制每个包 README 必须写缺陷限制</text>
+        <text x="0" y="68" fill="#334155" font-size="12.5">• 制定多个堆叠 PR 顺序合并的规矩</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- 6. testing -->
+  <g transform="translate(940, 455)">
+    <rect x="0" y="0" width="380" height="260" rx="16" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.8" filter="url(#soft-shadow)"/>
+    <path d="M 0 16 Q 0 0 16 0 L 364 0 Q 380 0 380 16 L 380 56 L 0 56 Z" fill="#eff6ff"/>
+
+    <rect x="18" y="16" width="76" height="24" rx="5" fill="#dbeafe"/>
+    <text x="56" y="32" fill="#2563eb" font-size="12" font-weight="800" text-anchor="middle" class="code">testing</text>
+    <text x="106" y="35" fill="#1e40af" font-size="17" font-weight="800">🧪 测试写稳妥</text>
+
+    <g transform="translate(20, 80)">
+      <text x="0" y="18" fill="#0f172a" font-size="15" font-weight="800">专门消灭偶发报错的假警报用例：</text>
+      <rect x="0" y="36" width="340" height="115" rx="10" fill="#f8fafc" stroke="#bfdbfe" stroke-width="1.2"/>
+      <g transform="translate(16, 24)">
+        <text x="0" y="18" fill="#2563eb" font-size="13" font-weight="700">DSH 真实案例：</text>
+        <text x="0" y="44" fill="#334155" font-size="12.5">• 随机分配空闲端口，防并发冲突</text>
+        <text x="0" y="68" fill="#334155" font-size="12.5">• 解决苹果/Windows时间戳精度大坑</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- BOTTOM STRIP -->
+  <g transform="translate(80, 740)">
+    <rect x="0" y="0" width="1240" height="75" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#soft-shadow)"/>
+    <text x="24" y="30" fill="#d97706" font-size="14" font-weight="800">💡 为什么没有 refactor（重构）目录？</text>
+    <text x="24" y="54" fill="#334155" font-size="13">对外表现出来的功能变了？归入 <tspan fill="#0284c7" font-weight="700">feature / bug-fix</tspan>；功能完全没变、纯粹删繁就简？直接归入 <tspan fill="#059669" font-weight="700">simplification</tspan>！</text>
+  </g>
+</svg>

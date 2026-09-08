@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" width="100%" height="100%">
+  <defs>
+    <pattern id="light-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#e2e8f0" stroke-width="0.75"/>
+    </pattern>
+    <filter id="soft-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.05"/>
+    </filter>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&amp;display=swap');
+    text {
+      font-family: -apple-system, 'PingFang SC', 'Noto Sans SC', 'Segoe UI', 'JetBrains Mono', sans-serif;
+    }
+    .code { font-family: 'JetBrains Mono', monospace; }
+  </style>
+
+  <!-- Clean Off-white Background -->
+  <rect width="100%" height="100%" fill="#f8fafc"/>
+  <rect width="100%" height="100%" fill="url(#light-grid)"/>
+
+  <!-- HEADER -->
+  <g transform="translate(80, 50)">
+    <rect x="0" y="0" width="150" height="28" rx="14" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.2"/>
+    <text x="75" y="19" fill="#0369a1" font-size="12" font-weight="800" text-anchor="middle" letter-spacing="0.5">开箱即用 4 件套</text>
+    <text x="0" y="70" fill="#0f172a" font-size="32" font-weight="800">write-notes-like-deepseek 交付了什么？</text>
+  </g>
+
+  <!-- 4 MINIMAL BENTO BOXES (LARGE TEXT, ZERO BULLET POINTS, MAXIMUM BREATHING SPACE) -->
+
+  <!-- BOX 1: SKILL -->
+  <g transform="translate(80, 150)">
+    <rect x="0" y="0" width="590" height="310" rx="20" fill="#ffffff" stroke="#bae6fd" stroke-width="2" filter="url(#soft-shadow)"/>
+    <path d="M 0 20 Q 0 0 20 0 L 570 0 Q 590 0 590 20 L 590 64 L 0 64 Z" fill="#f0f9ff"/>
+
+    <circle cx="36" cy="32" r="15" fill="#0284c7"/>
+    <text x="36" y="38" fill="#ffffff" font-size="14" font-weight="800" text-anchor="middle">1</text>
+    <text x="64" y="39" fill="#0369a1" font-size="20" font-weight="800">AI 一键装配（Agent Skill）</text>
+
+    <g transform="translate(28, 90)">
+      <!-- Command Box -->
+      <rect x="0" y="0" width="534" height="64" rx="12" fill="#0f172a"/>
+      <text x="20" y="38" fill="#38bdf8" font-size="13.5" font-weight="700" class="code">$ npx skills add czm15053/write-notes-like-deepseek</text>
+
+      <!-- Single Bold Message -->
+      <g transform="translate(0, 95)">
+        <text x="0" y="24" fill="#0f172a" font-size="18" font-weight="800">让 Cursor / Claude 动手前必须先看封条，</text>
+        <text x="0" y="56" fill="#0284c7" font-size="18" font-weight="800">绝不自作聪明盲目乱改代码！</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- BOX 2: TEMPLATES -->
+  <g transform="translate(730, 150)">
+    <rect x="0" y="0" width="590" height="310" rx="20" fill="#ffffff" stroke="#fde68a" stroke-width="2" filter="url(#soft-shadow)"/>
+    <path d="M 0 20 Q 0 0 20 0 L 570 0 Q 590 0 590 20 L 590 64 L 0 64 Z" fill="#fffbeb"/>
+
+    <circle cx="36" cy="32" r="15" fill="#d97706"/>
+    <text x="36" y="38" fill="#ffffff" font-size="14" font-weight="800" text-anchor="middle">2</text>
+    <text x="64" y="39" fill="#92400e" font-size="20" font-weight="800">200 字填空模板（填空即用）</text>
+
+    <g transform="translate(28, 90)">
+      <!-- 3 Pills -->
+      <rect x="0" y="0" width="165" height="64" rx="12" fill="#fef3c7" stroke="#fde68a" stroke-width="1.4"/>
+      <text x="82" y="28" fill="#b45309" font-size="11" font-weight="700" text-anchor="middle">动手前立项</text>
+      <text x="82" y="50" fill="#78350f" font-size="13" font-weight="800" text-anchor="middle" class="code">proposed.md</text>
+
+      <rect x="184" y="0" width="175" height="64" rx="12" fill="#dcfce7" stroke="#a7f3d0" stroke-width="1.4"/>
+      <text x="271" y="28" fill="#047857" font-size="11" font-weight="700" text-anchor="middle">已落地法律</text>
+      <text x="271" y="50" fill="#065f46" font-size="13" font-weight="800" text-anchor="middle" class="code">implemented.md</text>
+
+      <rect x="378" y="0" width="156" height="64" rx="12" fill="#ffe4e6" stroke="#fecdd3" stroke-width="1.4"/>
+      <text x="456" y="28" fill="#9f1239" font-size="11" font-weight="700" text-anchor="middle">被否决方案</text>
+      <text x="456" y="50" fill="#be123c" font-size="13" font-weight="800" text-anchor="middle" class="code">rejected.md</text>
+
+      <!-- Single Bold Message -->
+      <g transform="translate(0, 95)">
+        <text x="0" y="24" fill="#0f172a" font-size="18" font-weight="800">只有 4 个填空题，单篇仅 200 字，</text>
+        <text x="0" y="56" fill="#d97706" font-size="18" font-weight="800">就像发朋友圈一样轻松，3 分钟搞定！</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- BOX 3: CI GATES -->
+  <g transform="translate(80, 500)">
+    <rect x="0" y="0" width="590" height="310" rx="20" fill="#ffffff" stroke="#ddd6fe" stroke-width="2" filter="url(#soft-shadow)"/>
+    <path d="M 0 20 Q 0 0 20 0 L 570 0 Q 590 0 590 20 L 590 64 L 0 64 Z" fill="#faf5ff"/>
+
+    <circle cx="36" cy="32" r="15" fill="#7c3aed"/>
+    <text x="36" y="38" fill="#ffffff" font-size="14" font-weight="800" text-anchor="middle">3</text>
+    <text x="64" y="39" fill="#5b21b6" font-size="20" font-weight="800">机器铁面保安（CI 质检门禁）</text>
+
+    <g transform="translate(28, 90)">
+      <!-- Command Box -->
+      <rect x="0" y="0" width="534" height="64" rx="12" fill="#0f172a"/>
+      <text x="20" y="38" fill="#c084fc" font-size="13.5" font-weight="700" class="code">$ npm run verify-agent-note-tree &amp;&amp; npm run verify-format</text>
+
+      <!-- Single Bold Message -->
+      <g transform="translate(0, 95)">
+        <text x="0" y="24" fill="#0f172a" font-size="18" font-weight="800">敢吹牛画大饼？有断头死链？</text>
+        <text x="0" y="56" fill="#7c3aed" font-size="18" font-weight="800">提交代码时机器人直接打回，不靠人的自觉！</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- BOX 4: BOARD -->
+  <g transform="translate(730, 500)">
+    <rect x="0" y="0" width="590" height="310" rx="20" fill="#ffffff" stroke="#a7f3d0" stroke-width="2.2" filter="url(#soft-shadow)"/>
+    <path d="M 0 20 Q 0 0 20 0 L 570 0 Q 590 0 590 20 L 590 64 L 0 64 Z" fill="#f0fdf4"/>
+
+    <circle cx="36" cy="32" r="15" fill="#059669"/>
+    <text x="36" y="38" fill="#ffffff" font-size="14" font-weight="800" text-anchor="middle">4</text>
+    <text x="64" y="39" fill="#065f46" font-size="20" font-weight="800">免部署离线看板（全景大屏）</text>
+
+    <g transform="translate(28, 90)">
+      <!-- Command Box -->
+      <rect x="0" y="0" width="534" height="64" rx="12" fill="#f0fdf4" stroke="#a7f3d0" stroke-width="1.5"/>
+      <text x="20" y="38" fill="#047857" font-size="14" font-weight="700" class="code">双击 assets/agent-notes-board.html 直接打开</text>
+
+      <!-- Single Bold Message -->
+      <g transform="translate(0, 95)">
+        <text x="0" y="24" fill="#0f172a" font-size="18" font-weight="800">不用装 Node / 不用后端，纯本地大屏，</text>
+        <text x="0" y="56" fill="#059669" font-size="18" font-weight="800">避坑智库 + 演进史诗，向上汇报看它就行！</text>
+      </g>
+    </g>
+  </g>
+</svg>

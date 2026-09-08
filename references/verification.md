@@ -2,7 +2,7 @@
 
 > SKILL §5 的展开。接入 CI 时对照；本地轻量使用时跳过。
 
-## 门禁（均为 tsx，零新增依赖）
+## 检查脚本（均为 tsx，零新增依赖）
 
 1. **`verify-agent-note-tree`**（`scripts/agent-note-tree.ts` + `scripts/verify-agent-note-tree.ts`）
    - 校验 lifecycle 封闭集 `proposed/implemented/rejected` + `archived`、class 封闭集 6 个、路径深度 `{lifecycle}/{class}/file.md`、文件名 `yyyy-mm-dd-topic.md`、禁止 `INDEX.md`。

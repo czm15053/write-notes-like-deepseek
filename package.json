@@ -3,9 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "像 DeepSeek 团队一样沉淀 Agent Notes",
+  "description": "像 DeepSeek 团队一样沉淀 Agent Notes：面向 AI Agent 的架构决策治理与防撞护栏规范",
   "scripts": {
-    "verify-agent-note-tree": "tsx scripts/verify-agent-note-tree.ts",
-    "verify-agent-note-format": "tsx scripts/verify-agent-note-format.ts"
+    "verify-agent-note-tree": "npx tsx scripts/verify-agent-note-tree.ts",
+    "verify-agent-note-format": "npx tsx scripts/verify-agent-note-format.ts",
+    "archive-agent-note": "npx tsx scripts/archive-agent-note.ts",
+    "init-board": "npx tsx scripts/build-board.ts --init index.html '工程决策看板'",
+    "bundle-board": "npx tsx scripts/build-board.ts --bundle .agents/notes demo.html '工程决策看板'",
+    "build-board": "npx tsx scripts/build-board.ts --init index.html '工程决策看板'",
+    "import-dsh-notes": "npx tsx scripts/import-dsh-notes.ts"
   }
 }

@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" width="100%" height="100%">
+  <defs>
+    <pattern id="light-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#e2e8f0" stroke-width="0.75"/>
+    </pattern>
+    <filter id="soft-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&amp;display=swap');
+    text {
+      font-family: -apple-system, 'PingFang SC', 'Noto Sans SC', 'Segoe UI', 'JetBrains Mono', sans-serif;
+    }
+    .code { font-family: 'JetBrains Mono', monospace; }
+  </style>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#f8fafc"/>
+  <rect width="100%" height="100%" fill="url(#light-grid)"/>
+
+  <!-- HEADER -->
+  <g transform="translate(80, 50)">
+    <rect x="0" y="0" width="150" height="28" rx="14" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1.2"/>
+    <text x="75" y="19" fill="#6d28d9" font-size="12" font-weight="800" text-anchor="middle" letter-spacing="0.5">图 3 · 真实笔记解剖</text>
+    <text x="0" y="70" fill="#0f172a" font-size="32" font-weight="800">一篇合格的 Note 到底长啥样？只填 4 个空！</text>
+  </g>
+
+  <!-- MAIN BODY -->
+  <!-- LEFT: DOCUMENT MOCKUP (740px) -->
+  <g transform="translate(80, 150)">
+    <rect x="0" y="0" width="750" height="660" rx="20" fill="#ffffff" stroke="#bae6fd" stroke-width="2" filter="url(#soft-shadow)"/>
+    <path d="M 0 20 Q 0 0 20 0 L 730 0 Q 750 0 750 20 L 750 56 L 0 56 Z" fill="#f0f9ff"/>
+    <circle cx="28" cy="28" r="7" fill="#0284c7"/>
+    <text x="46" y="34" fill="#0369a1" font-size="14.5" font-weight="800">DSH 真实笔记：.agents/notes/implemented/simplification/2026-08-30-jsonl-only.md</text>
+
+    <g transform="translate(26, 75)">
+      <rect x="0" y="0" width="698" height="555" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+
+      <g transform="translate(24, 25)">
+        <!-- Headers -->
+        <text x="0" y="18" fill="#059669" font-size="14.5" font-weight="800" class="code"># Agent Note: JSONL-only first-party Session persistence</text>
+        <text x="0" y="44" fill="#0284c7" font-size="13" font-weight="700" class="code">Status: implemented</text>
+        <line x1="0" y1="58" x2="650" y2="58" stroke="#e2e8f0" stroke-width="1.5"/>
+
+        <!-- Section 1 -->
+        <g transform="translate(0, 75)">
+          <text x="0" y="16" fill="#b45309" font-size="13.5" font-weight="800" class="code">## Problem (遇到的棘手问题)</text>
+          <text x="0" y="42" fill="#334155" font-size="12.5">同时维护 JSONL 和 SQLite 导致跨平台测试和迁移规则全部翻倍，包袱过重。</text>
+        </g>
+
+        <!-- Section 2 -->
+        <g transform="translate(0, 150)">
+          <text x="0" y="16" fill="#059669" font-size="13.5" font-weight="800" class="code">## Decision (现在时客观事实)</text>
+          <text x="0" y="42" fill="#334155" font-size="12.5">首方存储全量瘦身为纯 JSONL。彻底删除 SQLite 存储包，坚决只留一种单物理格式！</text>
+        </g>
+
+        <!-- Section 3 -->
+        <g transform="translate(0, 225)">
+          <rect x="-8" y="0" width="666" height="135" rx="8" fill="#fffbeb" stroke="#fde68a" stroke-width="1.4"/>
+          <g transform="translate(14, 20)">
+            <text x="0" y="14" fill="#b45309" font-size="13.5" font-weight="800" class="code">## Alternatives considered (被否决的备选方案)</text>
+            <text x="0" y="40" fill="#78350f" font-size="12">• <tspan font-weight="700">保留 SQLite 作为可选后端</tspan>：看似灵活，但会让 CI 矩阵无限膨胀，否决！</text>
+            <text x="0" y="66" fill="#78350f" font-size="12">• <tspan font-weight="700">保留只读 SQLite 导入包</tspan>：没有实际部署需求，纯属过度设计，否决！</text>
+            <text x="0" y="92" fill="#78350f" font-size="12">• <tspan font-weight="700">把搜索数据库拿来当主存储</tspan>：将可丢弃的缓存与持久化混为一谈，否决！</text>
+          </g>
+        </g>
+
+        <!-- Section 4 -->
+        <g transform="translate(0, 385)">
+          <text x="0" y="16" fill="#7c3aed" font-size="13.5" font-weight="800" class="code">## Consequences (收益与真实代价)</text>
+          <text x="0" y="42" fill="#334155" font-size="12.5">• <tspan fill="#059669" font-weight="700">收益</tspan>：首方架构大幅简化，格式迁移无需跨库事务，削减海量测试成本。</text>
+          <text x="0" y="68" fill="#e11d48" font-size="12.5">• <tspan fill="#e11d48" font-weight="700">代价</tspan>：不再开箱兼容老旧的 SQLite 文件，需要用户在升级前手动导出。</text>
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <!-- RIGHT: SUPER LEAN RULES (470px) -->
+  <g transform="translate(860, 150)">
+    <!-- Box 1: 4 Core Sections -->
+    <g transform="translate(0, 0)">
+      <rect x="0" y="0" width="460" height="315" rx="20" fill="#ffffff" stroke="#a7f3d0" stroke-width="2" filter="url(#soft-shadow)"/>
+      <path d="M 0 20 Q 0 0 20 0 L 440 0 Q 460 0 460 20 L 460 56 L 0 56 Z" fill="#f0fdf4"/>
+      <circle cx="28" cy="28" r="12" fill="#059669"/>
+      <text x="28" y="33" fill="#ffffff" font-size="12" font-weight="800" text-anchor="middle">✓</text>
+      <text x="50" y="34" fill="#065f46" font-size="17" font-weight="800">4 个填空分别回答什么？</text>
+
+      <g transform="translate(24, 80)">
+        <text x="0" y="18" fill="#b45309" font-size="14" font-weight="800">1. Problem</text>
+        <text x="145" y="18" fill="#334155" font-size="14">当时遇到了什么大麻烦？</text>
+
+        <text x="0" y="58" fill="#059669" font-size="14" font-weight="800">2. Decision</text>
+        <text x="145" y="58" fill="#334155" font-size="14">现在用什么方案彻底解决？</text>
+
+        <text x="0" y="98" fill="#d97706" font-size="14" font-weight="800">3. Alternatives</text>
+        <text x="145" y="98" fill="#334155" font-size="14">毙掉了谁？为啥不要它？</text>
+
+        <text x="0" y="138" fill="#7c3aed" font-size="14" font-weight="800">4. Consequences</text>
+        <text x="145" y="138" fill="#334155" font-size="14">得了啥好处？有啥坏处？</text>
+
+        <rect x="0" y="170" width="412" height="42" rx="8" fill="#f0fdf4"/>
+        <text x="206" y="196" fill="#047857" font-size="13" font-weight="800" text-anchor="middle">⏱ 就像填空题一样，200字搞定！</text>
+      </g>
+    </g>
+
+    <!-- Box 2: CI Red Flags -->
+    <g transform="translate(0, 345)">
+      <rect x="0" y="0" width="460" height="315" rx="20" fill="#ffffff" stroke="#fecdd3" stroke-width="2" filter="url(#soft-shadow)"/>
+      <path d="M 0 20 Q 0 0 20 0 L 440 0 Q 460 0 460 20 L 460 56 L 0 56 Z" fill="#fff1f2"/>
+      <circle cx="28" cy="28" r="12" fill="#e11d48"/>
+      <text x="28" y="33" fill="#ffffff" font-size="12" font-weight="800" text-anchor="middle">!</text>
+      <text x="50" y="34" fill="#be123c" font-size="17" font-weight="800">CI 门禁打回两张红牌：</text>
+
+      <g transform="translate(24, 85)">
+        <rect x="0" y="0" width="412" height="60" rx="10" fill="#fff1f2"/>
+        <text x="16" y="24" fill="#e11d48" font-size="14" font-weight="800">🚫 红牌 1：严禁吹牛画大饼</text>
+        <text x="16" y="46" fill="#9f1239" font-size="12">已落地笔记敢写“后续计划支持”？直接报错！</text>
+
+        <g transform="translate(0, 75)">
+          <rect x="0" y="0" width="412" height="60" rx="10" fill="#fff1f2"/>
+          <text x="16" y="24" fill="#e11d48" font-size="14" font-weight="800">🚫 红牌 2：严禁偷懒不写备选</text>
+          <text x="16" y="46" fill="#9f1239" font-size="12">不写放弃了谁、没有对比？判定为敷衍打回！</text>
+        </g>
+
+        <g transform="translate(0, 150)">
+          <rect x="0" y="0" width="412" height="42" rx="8" fill="#faf5ff"/>
+          <text x="206" y="26" fill="#7c3aed" font-size="13" font-weight="800" text-anchor="middle">🛡 机器人严格验货，只收硬核事实！</text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

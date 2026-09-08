@@ -21,6 +21,6 @@
 
 ## 与 Notes 的衔接
 
-- 符合信号且需 durable 决策 → 写 `proposed/simplification` Note（Problem/Proposal/Alternatives/Acceptance/Risks）。
+- 符合信号且这个取舍需要留下来 → 写 `proposed/simplification` Note（Problem/Proposal/Alternatives/Acceptance/Risks）。
 - 已落地的 simplification → `implemented/simplification`，Consequences 同时写删掉的成本与省下的负担。
 - 触发 Note 树膨胀时，用 `archiving.md` 的“未来参考价值”判定是否归档，而非字数/年龄。

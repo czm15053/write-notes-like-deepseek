@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" width="100%" height="100%">
+  <defs>
+    <pattern id="light-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#e2e8f0" stroke-width="0.75"/>
+    </pattern>
+    <filter id="soft-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+    <marker id="arr-rose" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e11d48"/>
+    </marker>
+    <marker id="arr-emerald" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&amp;display=swap');
+    text {
+      font-family: -apple-system, 'PingFang SC', 'Noto Sans SC', 'Segoe UI', 'JetBrains Mono', sans-serif;
+    }
+    .code { font-family: 'JetBrains Mono', monospace; }
+  </style>
+
+  <rect width="100%" height="100%" fill="#f8fafc"/>
+  <rect width="100%" height="100%" fill="url(#light-grid)"/>
+
+  <!-- HEADER -->
+  <g transform="translate(80, 42)">
+    <rect x="0" y="0" width="150" height="28" rx="14" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.2"/>
+    <text x="75" y="19" fill="#0369a1" font-size="12" font-weight="800" text-anchor="middle" letter-spacing="0.5">图 1 · 真实故事</text>
+    <text x="0" y="68" fill="#0f172a" font-size="30" font-weight="800">三个月前踩过的坑，新 AI 为什么又踩一遍？</text>
+    <text x="0" y="100" fill="#64748b" font-size="15">代码只记下「怎么跑」，没记下「为什么不能用更简单的写法」</text>
+  </g>
+
+  <!-- LEFT: NO NOTE -->
+  <g transform="translate(80, 155)">
+    <rect x="0" y="0" width="590" height="645" rx="20" fill="#ffffff" stroke="#fecdd3" stroke-width="2" filter="url(#soft-shadow)"/>
+    <path d="M 0 20 Q 0 0 20 0 L 570 0 Q 590 0 590 20 L 590 60 L 0 60 Z" fill="#fff1f2"/>
+    <circle cx="28" cy="30" r="10" fill="#e11d48"/>
+    <text x="48" y="36" fill="#be123c" font-size="17" font-weight="800">没有 Note：三个月后，新 AI 把坑重新踩一遍</text>
+
+    <!-- Step 1 -->
+    <g transform="translate(24, 84)">
+      <rect x="0" y="0" width="542" height="128" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.2"/>
+      <text x="16" y="26" fill="#0f172a" font-size="14" font-weight="800">① 三个月前：工程师踩完坑，代码合进去了</text>
+      <rect x="16" y="40" width="510" height="72" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+      <text x="28" y="64" fill="#64748b" font-size="12">当时没写笔记。代码看起来很绕，但线上跑得稳。</text>
+      <text x="28" y="90" fill="#0f172a" font-size="12" class="code">while (!tryAcquireWithBackoff(lockKey, 50)) { yield(); }</text>
+    </g>
+
+    <line x1="295" y1="226" x2="295" y2="252" stroke="#e11d48" stroke-width="2.5" marker-end="url(#arr-rose)"/>
+
+    <!-- Step 2 -->
+    <g transform="translate(24, 266)">
+      <rect x="0" y="0" width="542" height="128" rx="12" fill="#f8fafc" stroke="#fecdd3" stroke-width="1.2"/>
+      <text x="16" y="26" fill="#e11d48" font-size="14" font-weight="800">② 今天：新开的 AI 会话看到这段代码</text>
+      <rect x="16" y="40" width="510" height="72" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+      <text x="28" y="64" fill="#dc2626" font-size="12" class="code">- while (!tryAcquireWithBackoff(...)) { yield(); }</text>
+      <text x="28" y="90" fill="#16a34a" font-size="12" class="code">+ await mutex.lock(lockKey);  // 「太丑了，我来优雅重构」</text>
+    </g>
+
+    <line x1="295" y1="408" x2="295" y2="434" stroke="#e11d48" stroke-width="2.5" marker-end="url(#arr-rose)"/>
+
+    <!-- Step 3 -->
+    <g transform="translate(24, 448)">
+      <rect x="0" y="0" width="542" height="168" rx="12" fill="#fff1f2" stroke="#fda4af" stroke-width="1.5"/>
+      <text x="18" y="30" fill="#be123c" font-size="15" font-weight="800">③ 线上死锁。三个月前试过的「优雅写法」又崩了</text>
+      <text x="18" y="64" fill="#9f1239" font-size="13.5">代码只记下 What，没记下 Why Not。</text>
+      <text x="18" y="94" fill="#9f1239" font-size="13.5">新 AI 是一张白纸，飞书 / Wiki 它也不会主动去翻。</text>
+      <text x="18" y="128" fill="#64748b" font-size="13">👉 坑还在，记忆没了。这就是不写 Note 的代价。</text>
+    </g>
+  </g>
+
+  <!-- RIGHT: WITH NOTE -->
+  <g transform="translate(730, 155)">
+    <rect x="0" y="0" width="590" height="645" rx="20" fill="#ffffff" stroke="#a7f3d0" stroke-width="2" filter="url(#soft-shadow)"/>
+    <path d="M 0 20 Q 0 0 20 0 L 570 0 Q 590 0 590 20 L 590 60 L 0 60 Z" fill="#f0fdf4"/>
+    <circle cx="28" cy="30" r="10" fill="#059669"/>
+    <text x="48" y="36" fill="#065f46" font-size="17" font-weight="800">有 Note：代码入口贴封条，新 AI 先读再动手</text>
+
+    <!-- Step 1 -->
+    <g transform="translate(24, 84)">
+      <rect x="0" y="0" width="542" height="128" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.2"/>
+      <text x="16" y="26" fill="#0f172a" font-size="14" font-weight="800">① 当时合代码时，顺手在入口留了一行指针</text>
+      <rect x="16" y="40" width="510" height="72" rx="8" fill="#f0f9ff" stroke="#bae6fd" stroke-width="1"/>
+      <text x="28" y="64" fill="#0284c7" font-size="11.5" class="code">// Note: 为什么不用普通锁 — 见 .agents/notes/.../lock.md</text>
+      <text x="28" y="90" fill="#0f172a" font-size="12" class="code">export function acquireLock() { while (!tryAcquire...) { ... } }</text>
+    </g>
+
+    <line x1="295" y1="226" x2="295" y2="252" stroke="#059669" stroke-width="2.5" marker-end="url(#arr-emerald)"/>
+
+    <!-- Step 2 -->
+    <g transform="translate(24, 266)">
+      <rect x="0" y="0" width="542" height="128" rx="12" fill="#f8fafc" stroke="#a7f3d0" stroke-width="1.2"/>
+      <text x="16" y="26" fill="#059669" font-size="14" font-weight="800">② 今天新 AI 读到封条，先打开那篇笔记</text>
+      <rect x="16" y="40" width="510" height="72" rx="8" fill="#fffbeb" stroke="#fde68a" stroke-width="1"/>
+      <text x="28" y="64" fill="#b45309" font-size="12" font-weight="700">## Alternatives considered</text>
+      <text x="28" y="90" fill="#78350f" font-size="12">普通互斥锁写法简洁，但并发实测会死锁，不能用。</text>
+    </g>
+
+    <line x1="295" y1="408" x2="295" y2="434" stroke="#059669" stroke-width="2.5" marker-end="url(#arr-emerald)"/>
+
+    <!-- Step 3 -->
+    <g transform="translate(24, 448)">
+      <rect x="0" y="0" width="542" height="168" rx="12" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+      <text x="18" y="30" fill="#065f46" font-size="15" font-weight="800">③ 新 AI 收回手，在已知边界里改，线上不崩</text>
+      <text x="18" y="64" fill="#047857" font-size="13.5">封条 100% 进上下文，不靠 AI 自觉去搜文档。</text>
+      <text x="18" y="94" fill="#047857" font-size="13.5">笔记跟代码同一批提交，三个月后仍然对得上。</text>
+      <text x="18" y="128" fill="#059669" font-size="13" font-weight="800">★ 换谁来接手，都先看见这条红线。</text>
+    </g>
+  </g>
+</svg>

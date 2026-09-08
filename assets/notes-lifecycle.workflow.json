@@ -1,0 +1,187 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Agent Note Lifecycle: State Machine & Archival Contract",
+    "visual_preset": "classic",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "draft",
+      "label": "提案与立项 (Draft & Proposed)"
+    },
+    {
+      "id": "active",
+      "label": "活跃现行法律 (Living Law)"
+    },
+    {
+      "id": "sync_lane",
+      "label": "日常迭代维护 (Daily Evolution)"
+    },
+    {
+      "id": "frozen",
+      "label": "冻结封存记录 (Frozen Archive)"
+    }
+  ],
+  "phases": [
+    {
+      "id": "p1",
+      "label": "1. 提案与评审",
+      "fromCol": 0,
+      "toCol": 1
+    },
+    {
+      "id": "p2",
+      "label": "2. 交付与现行演进",
+      "fromCol": 2,
+      "toCol": 3,
+      "variant": "emphasis"
+    },
+    {
+      "id": "p3",
+      "label": "3. 取代与封存",
+      "fromCol": 4,
+      "toCol": 4,
+      "variant": "dashed"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "idea",
+      "lane": "draft",
+      "col": 0,
+      "type": "frontend",
+      "label": "架构构想产生",
+      "sublabel": "技术选型 / 模块重构",
+      "width": 140
+    },
+    {
+      "id": "proposed",
+      "lane": "draft",
+      "col": 1,
+      "type": "backend",
+      "label": "proposed/ 提案",
+      "sublabel": "写清背景与强制反稻草人备选",
+      "width": 140
+    },
+    {
+      "id": "rejected",
+      "lane": "frozen",
+      "col": 1,
+      "type": "security",
+      "label": "rejected/ 否决",
+      "sublabel": "一句话原因留痕，防后人重犯",
+      "tag": "防反复翻案",
+      "width": 140
+    },
+    {
+      "id": "implemented",
+      "lane": "active",
+      "col": 2,
+      "type": "backend",
+      "label": "implemented/ 现行",
+      "sublabel": "现在时 Decision，与代码原子提交",
+      "tag": "现行法律",
+      "width": 140
+    },
+    {
+      "id": "sync",
+      "lane": "sync_lane",
+      "col": 2,
+      "type": "database",
+      "label": "80% 原地事实同步",
+      "sublabel": "改名移包同批直接改 Note 事实",
+      "tag": "In-place Sync",
+      "width": 140
+    },
+    {
+      "id": "superseded",
+      "lane": "active",
+      "col": 3,
+      "type": "backend",
+      "label": "被新方案取代",
+      "sublabel": "将独特理由搬入新代 Note",
+      "tag": "Supersession",
+      "width": 140
+    },
+    {
+      "id": "archived",
+      "lane": "frozen",
+      "col": 4,
+      "type": "cloud",
+      "label": "archived/ 封存",
+      "sublabel": "永久封印入 manifest.json",
+      "tag": "SHA-256 锁定",
+      "width": 140
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "idea",
+      "to": "proposed",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "proposed",
+      "to": "implemented",
+      "label": "评审通过交付",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e3",
+      "from": "proposed",
+      "to": "rejected",
+      "label": "方案被否决",
+      "variant": "security"
+    },
+    {
+      "id": "e4",
+      "from": "implemented",
+      "to": "sync",
+      "label": "代码小幅重构",
+      "variant": "default"
+    },
+    {
+      "id": "e5",
+      "from": "sync",
+      "to": "implemented",
+      "label": "就地更新事实",
+      "variant": "default"
+    },
+    {
+      "id": "e6",
+      "from": "implemented",
+      "to": "superseded",
+      "label": "新架构出现",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e7",
+      "from": "superseded",
+      "to": "archived",
+      "label": "归档封存",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "状态机铁律",
+      "items": [
+        "implemented 状态严禁出现 Plan/Proposal 词汇，全篇必须是现在时事实",
+        "rejected 仅当其理由能避免重蹈覆辙时保留，否则彻底删除"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "冻结与防腐",
+      "items": [
+        "进入 archived/ 的文件永久计算 SHA-256 封印在 manifest.json",
+        "归档文件跳过日常 CI 语法扫描，释放团队日常维护心智负担"
+      ]
+    }
+  ]
+}
