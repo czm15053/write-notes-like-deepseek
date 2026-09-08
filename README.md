@@ -237,6 +237,10 @@ npx tsx scripts/archive-agent-note.ts .agents/notes/implemented/<class>/<filenam
 - 源自 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) 的 `.agents/notes/` 架构与验证门禁体系
 - 遵循 [Agent Skills](https://agentskills.io) 开放标准
 
+## 友情链接
+
+- [LinuxDo](https://linux.do) — 真诚、友善、团结、专业，你的品质开源与技术社区
+
 ## 许可证
 
 [MIT](LICENSE)
