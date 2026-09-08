@@ -54,6 +54,12 @@ const archivedDir = join(agentNoteRoot, "archived", cls);
 mkdirSync(archivedDir, { recursive: true });
 const archivedPath = join(archivedDir, filename);
 
+if (existsSync(archivedPath)) {
+  console.error(`Error: target archived note already exists at ${archivedPath}`);
+  console.error("Refusing to overwrite existing archived note. Please inspect and resolve name collision manually.");
+  process.exit(1);
+}
+
 writeFileSync(targetPath, updatedContent, "utf8");
 renameSync(targetPath, archivedPath);
 console.log(`Moved: ${relToRoot} -> archived/${cls}/${filename}`);

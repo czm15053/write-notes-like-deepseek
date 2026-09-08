@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
+<meta name="generator" content="agent-notes-board">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>工程决策看板</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -869,13 +870,30 @@ async function loadSavedDirHandle() {
   } catch { return null; }
 }
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function parseMarkdown(text) {
   if (!text) return '';
-  let s = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  let s = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   s = s.replace(/```([\s\S]*?)```/g, (m, c) => `<pre><code>${c.trim()}</code></pre>`);
   s = s.replace(/`([^`\n]+)`/g, '<code>$1</code>');
   s = s.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
-  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="javascript:void(0)" onclick="handleDeepLink(\'$2\')" style="color:var(--brand-cyan);text-decoration:underline;">$1</a>');
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, linkText, href) => {
+    const cleanHref = href.trim();
+    if (/^(?:javascript|data|vbscript):/i.test(cleanHref)) {
+      return linkText;
+    }
+    const safeHref = escapeHtml(cleanHref);
+    return `<a href="javascript:void(0)" class="md-deep-link" data-deep-link="${safeHref}" style="color:var(--brand-cyan);text-decoration:underline;">${linkText}</a>`;
+  });
   s = s.replace(/^- (.*)$/gm, '• $1');
   return s.split(/\n{2,}/).map(p => {
     p = p.trim();
@@ -1055,13 +1073,13 @@ function renderBaseline() {
   ];
 
   document.getElementById('kpi-row').innerHTML = kpis.map(k => `
-    <div class="kpi-instrument" onclick="routeToListFilter('${k.filter}')">
+    <div class="kpi-instrument" onclick="routeToListFilter('${escapeHtml(k.filter)}')">
       <div class="kpi-tag">
-        <span>${k.label}</span>
+        <span>${escapeHtml(k.label)}</span>
         <span style="width:6px;height:6px;border-radius:50%;background:${k.color}"></span>
       </div>
       <div class="kpi-num">${k.count}</div>
-      <div class="kpi-caption">${k.desc}</div>
+      <div class="kpi-caption">${escapeHtml(k.desc)}</div>
       <div class="kpi-accent-bar" style="background:${k.color}"></div>
     </div>
   `).join('');
@@ -1073,21 +1091,26 @@ function renderBaseline() {
 
   document.getElementById('pillars-vault').innerHTML = pillars.map(n => {
     const cites = Core.inCount.get(n.id) || 0;
-    const title = n.title;
-    const desc = n.decision || n.problem || '系统核心架构协议';
+    const title = escapeHtml(n.title);
+    const desc = escapeHtml((n.decision || n.problem || '系统核心架构协议').replace(/<[^>]+>/g, ''));
+    const safeCls = escapeHtml(n.cls);
+    const clsLabel = escapeHtml(CLASS_LABELS[n.cls] || n.cls);
+    const safeDate = escapeHtml(n.date || '进行中');
+    const safeSlug = escapeHtml(n.slug);
+    const safeId = escapeHtml(n.id);
     return `
-      <div class="pillar-specimen" onclick="openConsole('${n.id}')">
+      <div class="pillar-specimen" data-node-id="${safeId}">
         <div>
           <div class="pillar-meta">
-            <span class="class-badge cls-${n.cls}">${CLASS_LABELS[n.cls] || n.cls}</span>
+            <span class="class-badge cls-${safeCls}">${clsLabel}</span>
             <span class="weight-gauge">被引用 × ${cites}</span>
           </div>
           <div class="pillar-core-title">${title}</div>
-          <div class="pillar-abstract">${desc.replace(/<[^>]+>/g, '')}</div>
+          <div class="pillar-abstract">${desc}</div>
         </div>
         <div class="pillar-telemetry">
-          <span>${n.date || '进行中'}</span>
-          <span>#${n.slug}</span>
+          <span>${safeDate}</span>
+          <span>#${safeSlug}</span>
         </div>
       </div>
     `;
@@ -1096,21 +1119,22 @@ function renderBaseline() {
   const activeNodes = nodes.filter(n => n.lifecycle === 'implemented' || n.lifecycle === 'proposed');
   document.getElementById('matrix-chambers').innerHTML = CLASSES.map(c => {
     const colNodes = activeNodes.filter(n => n.cls === c);
+    const clsLabel = escapeHtml(CLASS_LABELS[c] || c);
     return `
       <div class="chamber-pod">
         <div class="chamber-header">
           <span class="chamber-name">
             <span style="width:6px;height:6px;background:var(--brand-cyan);border-radius:1px;"></span>
-            ${CLASS_LABELS[c]}
+            ${clsLabel}
           </span>
           <span class="chamber-count">${colNodes.length}</span>
         </div>
         <div class="chamber-stream">
           ${colNodes.length ? colNodes.map(n => `
-            <div class="specimen-row" onclick="openConsole('${n.id}')">
-              <div class="specimen-title">${n.title}</div>
+            <div class="specimen-row" data-node-id="${escapeHtml(n.id)}">
+              <div class="specimen-title">${escapeHtml(n.title)}</div>
               <div class="specimen-info">
-                <span>${n.date || '—'}</span>
+                <span>${escapeHtml(n.date || '—')}</span>
                 ${(Core.inCount.get(n.id) || 0) ? `<span style="color:var(--brand-blue)">↗${Core.inCount.get(n.id)}</span>` : ''}
               </div>
             </div>
@@ -1209,18 +1233,18 @@ function renderTimeline() {
   for (const [mo, items] of filteredMonthsMap.entries()) {
     html += `
       <div class="chrono-node-epoch">
-        <div class="chrono-epoch-badge">${mo} · ${items.length} 条</div>
+        <div class="chrono-epoch-badge">${escapeHtml(mo)} · ${items.length} 条</div>
         <div class="chrono-cards">
           ${items.map(n => `
-            <div class="chrono-card" onclick="openConsole('${n.id}')">
+            <div class="chrono-card" data-node-id="${escapeHtml(n.id)}">
               <div class="chrono-pulse"></div>
               <div class="chrono-meta-row">
-                <span class="chrono-date-badge">📅 ${n.date || '进行中'}</span>
-                <span class="class-badge cls-${n.cls}">${CLASS_LABELS[n.cls] || n.cls}</span>
-                <span class="status-badge st-${n.lifecycle}">${STATUS_LABELS[n.lifecycle]}</span>
-                <span class="chrono-heading">${n.title}</span>
+                <span class="chrono-date-badge">📅 ${escapeHtml(n.date || '进行中')}</span>
+                <span class="class-badge cls-${escapeHtml(n.cls)}">${escapeHtml(CLASS_LABELS[n.cls] || n.cls)}</span>
+                <span class="status-badge st-${escapeHtml(n.lifecycle)}">${escapeHtml(STATUS_LABELS[n.lifecycle] || n.lifecycle)}</span>
+                <span class="chrono-heading">${escapeHtml(n.title)}</span>
               </div>
-              <div class="chrono-body">${(n.problem || n.decision || '').slice(0, 180)}...</div>
+              <div class="chrono-body">${escapeHtml((n.problem || n.decision || '').slice(0, 180))}...</div>
             </div>
           `).join('')}
         </div>
@@ -1280,16 +1304,16 @@ function renderAlternatives() {
   });
 
   document.getElementById('pitfalls-grid').innerHTML = filtered.length ? filtered.map(item => `
-    <div class="pitfall-dossier" onclick="openConsole('${item.nodeId}')">
+    <div class="pitfall-dossier" data-node-id="${escapeHtml(item.nodeId)}">
       <div>
         <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-          <span class="class-badge cls-${item.cls}">${CLASS_LABELS[item.cls] || item.cls}</span>
-          <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-tertiary);">#${item.nodeId.split('/').pop().replace('.md','')}</span>
+          <span class="class-badge cls-${escapeHtml(item.cls)}">${escapeHtml(CLASS_LABELS[item.cls] || item.cls)}</span>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-tertiary);">#${escapeHtml(item.nodeId.split('/').pop().replace('.md',''))}</span>
         </div>
-        <div class="hazard-banner">🚫 放弃备选：${item.discarded}</div>
-        <div class="crux-evidence" style="margin-top:12px;">💡 权衡依据：${item.crux}</div>
+        <div class="hazard-banner">🚫 放弃备选：${escapeHtml(item.discarded)}</div>
+        <div class="crux-evidence" style="margin-top:12px;">💡 权衡依据：${escapeHtml(item.crux)}</div>
       </div>
-      <div class="triumphant-verdict">✅ ${item.winner}</div>
+      <div class="triumphant-verdict">✅ ${escapeHtml(item.winner)}</div>
     </div>
   `).join('') : `<div style="grid-column:1/-1;color:var(--text-tertiary);text-align:center;padding:48px;font-family:var(--font-mono);">// 未检索到相关避坑记录</div>`;
 }
@@ -1318,12 +1342,12 @@ function renderDirectory() {
   document.getElementById('matrix-rows-stream').innerHTML = list.length ? list.map((n, idx) => {
     const cites = Core.inCount.get(n.id) || 0;
     return `
-      <div class="matrix-row-cell" onclick="openConsole('${n.id}')">
+      <div class="matrix-row-cell" data-node-id="${escapeHtml(n.id)}">
         <span class="cell-index">#${String(idx + 1).padStart(3, '0')}</span>
-        <span><span class="class-badge cls-${n.cls}">${CLASS_LABELS[n.cls] || n.cls}</span></span>
-        <span class="cell-title">${n.title}</span>
-        <span><span class="status-badge st-${n.lifecycle}">${STATUS_LABELS[n.lifecycle]}</span></span>
-        <span class="cell-date">${n.date || '—'}</span>
+        <span><span class="class-badge cls-${escapeHtml(n.cls)}">${escapeHtml(CLASS_LABELS[n.cls] || n.cls)}</span></span>
+        <span class="cell-title">${escapeHtml(n.title)}</span>
+        <span><span class="status-badge st-${escapeHtml(n.lifecycle)}">${escapeHtml(STATUS_LABELS[n.lifecycle] || n.lifecycle)}</span></span>
+        <span class="cell-date">${escapeHtml(n.date || '—')}</span>
         <span class="cell-cites">${cites ? `↗ ${cites}` : ''}</span>
       </div>
     `;
@@ -1338,7 +1362,7 @@ function openConsole(id) {
 
   const stBadge = document.getElementById('dr-status-badge');
   stBadge.className = `status-badge st-${n.lifecycle}`;
-  stBadge.textContent = STATUS_LABELS[n.lifecycle];
+  stBadge.textContent = STATUS_LABELS[n.lifecycle] || n.lifecycle;
 
   const clsBadge = document.getElementById('dr-class-badge');
   clsBadge.className = `class-badge cls-${n.cls}`;
@@ -1356,9 +1380,9 @@ function openConsole(id) {
 
   document.getElementById('dr-headline').textContent = n.title;
   document.getElementById('dr-timestamp-bar').innerHTML = `
-    <span>${n.date || '无日期'}</span>
+    <span>${escapeHtml(n.date || '无日期')}</span>
     <span>·</span>
-    <span>${n.slug}</span>
+    <span>${escapeHtml(n.slug)}</span>
     ${(Core.inCount.get(n.id) || 0) ? `<span>·</span><span style="color:var(--brand-blue);font-weight:700;">被引用 ${Core.inCount.get(n.id)} 次</span>` : ''}
   `;
 
@@ -1376,7 +1400,7 @@ function openConsole(id) {
       <div>
         <div class="lineage-group-title">前置先决依据：</div>
         <div class="lineage-chips">
-          ${outgoing.map(o => `<div class="lineage-chip" onclick="openConsole('${o.id}')">↖ ${o.title}</div>`).join('')}
+          ${outgoing.map(o => `<div class="lineage-chip" data-node-id="${escapeHtml(o.id)}">↖ ${escapeHtml(o.title)}</div>`).join('')}
         </div>
       </div>
     `;
@@ -1386,7 +1410,7 @@ function openConsole(id) {
       <div style="margin-top:10px;">
         <div class="lineage-group-title">派生制约影响：</div>
         <div class="lineage-chips">
-          ${incoming.map(i => `<div class="lineage-chip" onclick="openConsole('${i.id}')">↘ ${i.title}</div>`).join('')}
+          ${incoming.map(i => `<div class="lineage-chip" data-node-id="${escapeHtml(i.id)}">↘ ${escapeHtml(i.title)}</div>`).join('')}
         </div>
       </div>
     `;
@@ -1504,19 +1528,19 @@ async function startMission() {
     selectedSearchIdx = -1;
 
     if (!topMatches.length) {
-      searchPopover.innerHTML = `<div class="popover-empty">// 未找到与 "${q}" 匹配的决策记录</div>`;
+      searchPopover.innerHTML = `<div class="popover-empty">// 未找到与 "${escapeHtml(q)}" 匹配的决策记录</div>`;
     } else {
       searchPopover.innerHTML = topMatches.map((n, idx) => {
-        const title = n.title;
+        const title = escapeHtml(n.title);
         const cites = Core.inCount.get(n.id) || 0;
         return `
-          <div class="popover-item" data-id="${n.id}" data-idx="${idx}">
+          <div class="popover-item" data-id="${escapeHtml(n.id)}" data-idx="${idx}">
             <div class="popover-item-main">
               <div class="popover-title">${title}</div>
               <div class="popover-sub">
-                <span class="class-badge cls-${n.cls}">${CLASS_LABELS[n.cls] || n.cls}</span>
-                <span>${n.date || '进行中'}</span>
-                <span>#${n.slug}</span>
+                <span class="class-badge cls-${escapeHtml(n.cls)}">${escapeHtml(CLASS_LABELS[n.cls] || n.cls)}</span>
+                <span>${escapeHtml(n.date || '进行中')}</span>
+                <span>#${escapeHtml(n.slug)}</span>
               </div>
             </div>
             ${cites ? `<span class="weight-gauge">↗${cites}</span>` : ''}
@@ -1578,6 +1602,21 @@ async function startMission() {
   });
 
   document.addEventListener('click', e => {
+    const nodeTrigger = e.target.closest('[data-node-id]');
+    if (nodeTrigger) {
+      const id = nodeTrigger.getAttribute('data-node-id');
+      if (id) {
+        openConsole(id);
+        return;
+      }
+    }
+    const deepLink = e.target.closest('.md-deep-link');
+    if (deepLink) {
+      e.preventDefault();
+      const target = deepLink.getAttribute('data-deep-link');
+      if (target) handleDeepLink(target);
+      return;
+    }
     if (!e.target.closest('.hud-search')) {
       searchPopover.classList.remove('open');
     }
