@@ -180,10 +180,10 @@ npx skills add czm15053/write-notes-like-deepseek
 
 ### 3. 本地与 CI 门禁检查
 
-本项目附带确定性校验与归档脚本：
+> **提示**：校验脚本依赖 `Node.js >= 18`。在宿主项目中，您可以直接让 Agent 执行校验，或将 `scripts/` 目录拷贝至项目根目录接入 CI。
 
 ```bash
-# 1. 校验文件树规范与相对 Markdown 链接有效性
+# 1. 校验文件树规范与内部相对 Markdown 链接有效性
 npx tsx scripts/verify-agent-note-tree.ts
 
 # 2. 校验文件内部格式（头块三行、时态骨架、必选备选方案、禁用提案词）
@@ -198,24 +198,31 @@ npx tsx scripts/archive-agent-note.ts .agents/notes/implemented/<class>/<filenam
 ```json
 {
   "scripts": {
-    "verify-notes": "tsx scripts/verify-agent-note-tree.ts && tsx scripts/verify-agent-note-format.ts",
-    "archive-note": "tsx scripts/archive-agent-note.ts"
+    "verify-notes": "npx tsx scripts/verify-agent-note-tree.ts && npx tsx scripts/verify-agent-note-format.ts",
+    "archive-note": "npx tsx scripts/archive-agent-note.ts",
+    "board": "npx tsx scripts/build-board.ts --init board.html '工程决策看板'"
   }
 }
 ```
 
 ### 4. 通用决策全景看板 (Agent Notes Board)
 
-无需搭建任何后端服务或数据库，直接用浏览器双击打开 `assets/agent-notes-board.html`，即可查看全景可视化大屏：
+无需搭建任何后端服务或数据库，默认生成为 `board.html`（避免与业务项目现有的 `index.html` 产生任何命名冲突）：
+
+```bash
+npm run board
+# 或：npx tsx scripts/build-board.ts --init board.html "项目工程看板"
+```
 
 <p align="center">
   <img src="assets/08-board-dashboard.png" alt="把笔记变成全景大屏：Agent Notes Board" width="100%" />
 </p>
 
-- **🏛️ 架构基线**：自动计算相对引用网络，高亮标出全系统的“承重墙”核心决策。
+- **🏛️ 架构基线**：自动基于入度计算系统承重墙（Core Pillars）、按分类聚合活跃领域事实。
 - **🛡️ 避坑智库**：一键聚合全库所有被否决的备选方案，排雷禁区一览无余。
-- **⏱️ 演进史诗**：按月份生成架构演进里程碑时间流。
-- **⚡ 本地热更新**：点击右上角「连接本地目录」授权后，在编辑器修改/新建 Note，切回浏览器即时自动刷新！
+- **⏱️ 演进时间线**：按月与按大类自由切片的时间里程碑流，附带精确日期标牌。
+- **⚡ 本地无感热更新**：点击右上角「连接本地目录」授权后，在编辑器修改/新建 Note，切回浏览器即时自动刷新！
+- **🔍 真实即时搜索**：键盘按 `/` 随时呼出命令面板，支持 `↑` `↓` 移动与回车直达抽屉。
 
 ---
 
