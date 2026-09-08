@@ -36,7 +36,7 @@ function checkTargetSafety(targetPath: string) {
 }
 
 if (isInitMode) {
-  const targetPath = cleanArgs[0] ? resolve(cleanArgs[0]) : resolve(process.cwd(), 'index.html');
+  const targetPath = cleanArgs[0] ? resolve(cleanArgs[0]) : resolve(process.cwd(), 'board.html');
   const projectName = cleanArgs[1] || '工程决策看板';
 
   checkTargetSafety(targetPath);

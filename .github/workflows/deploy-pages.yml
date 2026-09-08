@@ -31,7 +31,8 @@ jobs:
       - name: Prepare Pages Directory
         run: |
           mkdir -p _site
-          cp index.html _site/
+          cp board.html _site/
+          cp board.html _site/index.html
           cp demo.html _site/ 2>/dev/null || true
           cp -r assets _site/ 2>/dev/null || true
 

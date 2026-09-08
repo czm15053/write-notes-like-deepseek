@@ -8,9 +8,9 @@
     "verify-agent-note-tree": "npx tsx scripts/verify-agent-note-tree.ts",
     "verify-agent-note-format": "npx tsx scripts/verify-agent-note-format.ts",
     "archive-agent-note": "npx tsx scripts/archive-agent-note.ts",
-    "init-board": "npx tsx scripts/build-board.ts --init index.html '工程决策看板'",
+    "init-board": "npx tsx scripts/build-board.ts --init board.html '工程决策看板'",
     "bundle-board": "npx tsx scripts/build-board.ts --bundle .agents/notes demo.html '工程决策看板'",
-    "build-board": "npx tsx scripts/build-board.ts --init index.html '工程决策看板'",
+    "build-board": "npx tsx scripts/build-board.ts --init board.html '工程决策看板'",
     "import-dsh-notes": "npx tsx scripts/import-dsh-notes.ts"
   }
 }

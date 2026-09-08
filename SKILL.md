@@ -115,7 +115,7 @@ Status: <状态>
 npm run verify-agent-note-tree     # 校验目录合法性、分类、文件名及相对 Markdown 链接有效性
 npm run verify-agent-note-format   # 校验头块、状态、必选节（Alternatives）与现在时禁令
 npm run archive-agent-note <path>  # 方案被取代时一键归档并提示修复入站相对死链
-npm run init-board                 # [日常开发] 生成 ~69KB 轻量直连看板 index.html（推荐）
+npm run init-board                 # [日常开发] 生成 ~69KB 轻量直连看板 board.html（推荐）
 npm run bundle-board               # [脱机打包] 生成内嵌全量数据的自包含演示看板 demo.html
 ```
 
@@ -126,7 +126,7 @@ npx tsx scripts/verify-agent-note-tree.ts
 npx tsx scripts/verify-agent-note-format.ts
 npx tsx scripts/archive-agent-note.ts <note-path>
 
-# 日常开发（轻量直连，推荐）：在工作目录快速生成轻量看板 index.html (仅 ~69KB)
+# 日常开发（轻量直连，推荐）：在工作目录快速生成轻量看板 board.html (仅 ~69KB)
 npx tsx scripts/build-board.ts --init [targetPath] [projectName]
 
 # 静态打包（脱机大单体）：生成包含全量内嵌笔记数据的单文件 demo.html (供脱机分发或 GitHub Pages)
@@ -136,7 +136,7 @@ npx tsx scripts/build-board.ts --bundle [notesDir] [outputPath] [projectName]
 ### 💡 工程决策看板运行机制 (Agent Notes Board)
 
 **1. 日常开发模式（推荐）：**
-- 运行 `npx tsx <skill路径>/scripts/build-board.ts --init index.html "项目决策看板"` 生成约 69KB 的纯模板文件；
+- 运行 `npx tsx <skill路径>/scripts/build-board.ts --init board.html "项目决策看板"` 生成约 69KB 的纯模板文件；
 - 用浏览器打开后，点击右上角 **「连接本地目录」** 授权选择 `.agents/notes`，浏览器通过 File System Access API 直读本地；
 - **零构建、零大单体冗余**：开发或 Agent 增删改 Note 后，只要切回浏览器窗口立刻自动静默热更新！
 
