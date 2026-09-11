@@ -1,6 +1,6 @@
 ---
 name: write-notes-like-deepseek
-description: 像 DeepSeek 团队一样写 Agent Notes：为什么、放弃了什么，和这次改动放在一起。Use when making a non-trivial change, technical selection, architectural refactoring, bug postmortem, or simplification worth revisiting. 触发时机：涉及技术选型、重大架构重构、修复非直觉缺陷/踩坑复盘、或裁撤冗余特性时调用。适用于任何仓库
+description: Use when making non-trivial changes, choosing between technical alternatives (A vs B), performing architectural refactoring, investigating past design constraints, writing postmortems for non-obvious bugs, or simplifying/removing dead surfaces. Records, updates, and supersedes architectural decisions and trade-offs in .agents/notes/ while keeping code entry points tied to durable rationale.
 ---
 
 # Write Notes Like DeepSeek
@@ -81,9 +81,21 @@ Status: <状态>
 
 模板见 `templates/`。
 
-## 3. 什么时候写、什么时候改
+## 3. 动手前检索历史决策（去中心化 4 法）
 
-优先查现有归属——**80% 的日常维护是「原地更新老 Note 的事实」，而不是盲目建新篇**：
+动手重构或选型前，先查历史约束，防止重复踩坑或破坏前人妥协：
+
+1. **入口反向追溯**：阅读模块入口、核心接口或状态机时，优先看顶部的 `// Note: ... 见 .agents/notes/...` 注释。
+2. **分类树物理切片**：不扫全库，按意图直切目录（架构看 `implemented/architecture/`，避坑看 `rejected/`）。
+3. **精准全局检索**：使用 ripgrep 搜关键词或机制名，**必带 `--hidden` 并排除 `archived/`**：
+   ```bash
+   rg --hidden --glob '!.agents/notes/archived/**' "<机制名或关键词>" .agents/notes/
+   ```
+4. **模块文档下钻**：子模块 README 涉及设计依据时，顺着相对 Markdown 链接直达对应 Note。
+
+## 4. 什么时候写、什么时候改
+
+优先查现有归属（Update the owning note）——**绝大多数日常维护是原地更新老 Note 事实，严禁盲目建新篇**：
 
 - 拍板新路线："就选 X"、"决定用 X"、"我们先用 X 顶着" → 触发 Note
 - 比较中："X 和 Y 怎么选"、"为什么倾向 X" → 触发备选记录
@@ -100,7 +112,7 @@ Status: <状态>
 
 > 判定与流转见 `references/when-to-write.md`，归档与删除见 `references/archiving.md`。
 
-## 4. 怎么写好
+## 5. 怎么写好
 
 - `## Consequences` 同时写**代价和收益**，不是只写"放弃了什么"。
 - 自由节（package 拓扑、wire 契约、schema 等）放在 `Decision` 与 `Alternatives` 之间，保持可检索的机制名与 `must / may / never` 时序强调。
@@ -109,7 +121,7 @@ Status: <状态>
 - 文风与去推导痕迹见 `references/prose-checklist.md`；简化机会见 `references/simplification-checklist.md`。
 - 写完后过一遍 `references/quality-gate.md` 的语义自检，只向用户报**缺口和写得好的地方**（≤5 行），缺口给具体修法。结构靠脚本，意思靠人点头。
 
-## 5. 校验与运维命令
+## 6. 校验与运维命令
 
 在仓库根目录直接运行（已配置 npm script 时）：
 
