@@ -3,16 +3,18 @@
 > **像 DeepSeek 团队一样沉淀 Agent Notes**：为代码库建立面向 AI Agent 的「架构决策治理与防撞护栏」。每一次重要变更，将「为什么做」与「放弃了什么」同代码原子提交，终结 Agent 跨会话失忆与破坏性重构。
 
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-Standard-blue)](https://agentskills.io)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-success)](https://czm15053.github.io/write-notes-like-deepseek/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-success)](https://czm15053.github.io/write-notes-like-deepseek-demo/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 <p align="center">
   <img src="assets/hero.png" alt="下一个 AI 先看见「为什么」，再动手改" width="100%" />
 </p>
 
-[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 在两个月内演进了 1,700+ 篇 Notes。其核心不是写事后总结，而是**将代码无法承载的「为什么」与「放弃了什么」固化为仓库活资产**。
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 在两个月内演进了 1,900+ 篇 Notes。其核心不是写事后总结，而是**将代码无法承载的「为什么」与「放弃了什么」固化为仓库活资产**。
 
 本项目把这套实践拆成开箱即用的 4 件套：Agent Skill、填空模板、CI 门禁、单文件看板。
+
+📺 先看效果：[在线演示看板](https://czm15053.github.io/write-notes-like-deepseek-demo/)（内置 973 篇 DSH 真实决策笔记，可脱机浏览）
 
 ```bash
 npx skills add czm15053/write-notes-like-deepseek
