@@ -25,9 +25,26 @@ function resolveAgentNoteRoot(): string {
 
 export const agentNoteRoot = resolveAgentNoteRoot()
 
-const AGENT_NOTE_LIFECYCLES = ['proposed', 'implemented', 'rejected'] as const
-export const AGENT_NOTE_CLASSES = ['feature', 'bug-fix', 'simplification', 'architecture', 'process', 'testing'] as const
-const AGENT_NOTE_ARCHIVE = 'archived'
+const AGENT_NOTE_LIFECYCLES = ['proposed', 'implemented', 'rejected', '提案', '生效', '已否决'] as const
+export const AGENT_NOTE_CLASSES = ['feature', 'bug-fix', 'simplification', 'architecture', 'process', 'testing', '功能', '修复', '精简', '架构', '流程', '测试'] as const
+// Folder name -> canonical lifecycle ID. Chinese aliases are optional and
+// purely additive: English folders behave exactly as before, and a repo may
+// use either language as long as it sticks to one. AgentNote.lifecycle is
+// always the English ID so downstream checks are language-agnostic.
+export const LIFECYCLE_DIR_IDS: Record<string, string> = {
+  proposed: 'proposed', '提案': 'proposed',
+  implemented: 'implemented', '生效': 'implemented',
+  rejected: 'rejected', '已否决': 'rejected',
+  archived: 'archived', '归档': 'archived',
+}
+export const CLASS_DIR_IDS: Record<string, string> = {
+  feature: 'feature', '功能': 'feature',
+  'bug-fix': 'bug-fix', '修复': 'bug-fix',
+  simplification: 'simplification', '精简': 'simplification',
+  architecture: 'architecture', '架构': 'architecture',
+  process: 'process', '流程': 'process',
+  testing: 'testing', '测试': 'testing',
+}
 const ROOT_ALLOWLIST = new Set(['AGENTS.md', 'CLAUDE.md'])
 
 export interface AgentNote {
@@ -45,8 +62,8 @@ export function walkAgentNoteTree(): { notes: AgentNote[]; errors: string[] } {
       errors.push('structure: INDEX.md — centralized Agent Note indexes are forbidden; browse the lifecycle/class tree or search the repository')
       continue
     }
-    if (entry.isDirectory() && entry.name !== AGENT_NOTE_ARCHIVE && !(AGENT_NOTE_LIFECYCLES as readonly string[]).includes(entry.name)) {
-      errors.push(`structure: ${entry.name}/ — unknown lifecycle folder (allowed: ${AGENT_NOTE_LIFECYCLES.join(', ')}, plus ${AGENT_NOTE_ARCHIVE}/)`)
+    if (entry.isDirectory() && LIFECYCLE_DIR_IDS[entry.name] === undefined) {
+      errors.push(`structure: ${entry.name}/ — unknown lifecycle folder (allowed: proposed/implemented/rejected[/archived], CN: 提案/生效/已否决[/归档])`)
     }
   }
   for (const lifecycle of AGENT_NOTE_LIFECYCLES) {
@@ -60,15 +77,15 @@ export function walkAgentNoteTree(): { notes: AgentNote[]; errors: string[] } {
         errors.push(`structure: ${match} — expected {lifecycle}/{class}/file.md (got depth ${segs.length})`)
         continue
       }
-      if (!(AGENT_NOTE_CLASSES as readonly string[]).includes(cls)) {
-        errors.push(`structure: ${match} — unknown class folder "${cls}" (allowed: ${AGENT_NOTE_CLASSES.join(', ')})`)
+      if (CLASS_DIR_IDS[cls] === undefined) {
+        errors.push(`structure: ${match} — unknown class folder "${cls}" (allowed: ${AGENT_NOTE_CLASSES.slice(0, 6).join(', ')}; CN: ${AGENT_NOTE_CLASSES.slice(6).join(',')})`)
         continue
       }
       if (!/^\d{4}-\d{2}-\d{2}-.+\.md$/.test(base)) {
         errors.push(`structure: ${match} — filename must be yyyy-mm-dd-topic.md`)
         continue
       }
-      notes.push({ lifecycle, rel: match, date: base.slice(0, 10) })
+      notes.push({ lifecycle: LIFECYCLE_DIR_IDS[lifecycle], rel: match, date: base.slice(0, 10) })
     }
   }
   return { notes, errors }

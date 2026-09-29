@@ -58,6 +58,8 @@ description: Use when a change is non-trivial by DSH standards (behavior, archit
 
 每条 Note 的路径就是身份：`{lifecycle}/{class}/yyyy-mm-dd-topic.md`
 
+> **中文目录（可选）**：生命周期与分类目录均可用中文别名——`提案/生效/已否决/归档` × `功能/修复/精简/架构/流程/测试`；状态行 `状态：提案/生效/已否决 — 原因` 同步支持，笔记首行可用 `# 决策笔记：<标题>`。中英目录都过校验，但**一个仓库内只用一种语言**，别混。看板与归档脚本对两种目录同样工作（归档目标随源目录语言：英文进 `archived/`，中文进 `归档/`）。
+
 **Lifecycle（一层文件夹，这篇走到哪一步）：**
 
 - `proposed` — 想法阶段，有了方案但还没落地
