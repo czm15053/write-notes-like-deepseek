@@ -57,7 +57,14 @@ const projectName = cleanArgs[2] || '工程决策看板';
 
 checkTargetSafety(outputPath);
 
-const LIFECYCLES = ['implemented', 'proposed', 'rejected', 'archived'];
+// Chinese folder aliases -> English internal IDs used by the board template
+const LIFECYCLE_DIRS: Record<string, string> = {
+  '提案': 'proposed', '生效': 'implemented', '已否决': 'rejected', '归档': 'archived',
+  'proposed': 'proposed', 'implemented': 'implemented', 'rejected': 'rejected', 'archived': 'archived',
+};
+const CLASS_DIRS: Record<string, string> = {
+  '功能': 'feature', '修复': 'bug-fix', '精简': 'simplification', '架构': 'architecture', '流程': 'process', '测试': 'testing',
+};
 
 if (!existsSync(notesDir)) {
   console.error(`❌ Notes directory not found at: ${notesDir}`);
@@ -84,8 +91,8 @@ function parseNoteContent(raw: string, relPath: string, slugToId: Map<string, st
   const parseable = stripFencedBlocks(raw);
   const slug = relPath.split('/').pop()!.replace(/\.md$/, '');
   const parts = relPath.split('/');
-  const lifecycle = parts[0];
-  const cls = parts[1] || 'architecture';
+  const lifecycle = LIFECYCLE_DIRS[parts[0]] ?? parts[0];
+  const cls = CLASS_DIRS[parts[1]] || parts[1] || 'architecture';
 
   let title = slug;
   let status = lifecycle;
@@ -94,7 +101,7 @@ function parseNoteContent(raw: string, relPath: string, slugToId: Map<string, st
   const dMatch = /^(\d{4}-\d{2}-\d{2})/.exec(slug);
   if (dMatch) date = dMatch[1];
 
-  const h1Match = /^# Agent Note[^:：]*[:：]\s*(.*)$/m.exec(parseable);
+  const h1Match = /^# (?:决策笔记|Agent Note)[:：]\s*(.*)$/m.exec(parseable);
   if (h1Match) title = h1Match[1].trim();
 
   function extractSection(secNamePattern: string) {
@@ -104,9 +111,9 @@ function parseNoteContent(raw: string, relPath: string, slugToId: Map<string, st
   }
 
   const problem = extractSection('Problem|问题');
-  const decision = extractSection('Decision|Proposal|决策|提案');
-  const alternatives = extractSection('Alternatives considered|曾考虑的替代方案|曾考虑的备选');
-  const consequences = extractSection('Consequences|后果');
+  const decision = extractSection('Decision|Proposal|决定|决策|方案|提议|提案');
+  const alternatives = extractSection('Alternatives considered|备选方案|替代方案|曾考虑的替代方案|曾考虑的备选');
+  const consequences = extractSection('Consequences|代价与收益|后果');
 
   const links: string[] = [];
   for (const m of parseable.matchAll(/\]\(([^)]+\.md)\)/g)) {
@@ -170,7 +177,7 @@ function walk(dir: string, baseDir: string = dir): any[] {
         const cleanRel = isZh ? relPath.replace(/\.zh\.md$/, '.md') : relPath;
         const parts = cleanRel.split('/');
 
-        if (parts.length >= 3 && LIFECYCLES.includes(parts[0])) {
+        if (parts.length >= 3 && (LIFECYCLE_DIRS[parts[0]] !== undefined)) {
           if (!noteFiles.has(cleanRel) || isZh) {
             noteFiles.set(cleanRel, fullPath);
           }

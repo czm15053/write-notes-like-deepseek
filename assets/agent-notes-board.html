@@ -806,7 +806,10 @@ window.__INLINE_DATA__ = null;
 <script>
 'use strict';
 
-const LIFECYCLES = ['implemented', 'proposed', 'rejected', 'archived'];
+// Accept both English and Chinese note folders; Chinese names normalize to English internal IDs
+const LIFECYCLES = ['implemented', 'proposed', 'rejected', 'archived', '提案', '生效', '已否决', '归档'];
+const LIFECYCLE_IDS = { '提案': 'proposed', '生效': 'implemented', '已否决': 'rejected', '归档': 'archived' };
+const CLASS_IDS = { '功能': 'feature', '修复': 'bug-fix', '精简': 'simplification', '架构': 'architecture', '流程': 'process', '测试': 'testing' };
 const STATUS_LABELS = { implemented: '已落地', proposed: '待评审', rejected: '已否决', archived: '已归档' };
 
 const CLASSES = ['architecture', 'feature', 'bug-fix', 'simplification', 'process', 'testing'];
@@ -906,8 +909,8 @@ function parseMarkdown(text) {
 function parseNote(raw, relPath, slugToId = new Map()) {
   const slug = relPath.split('/').pop().replace(/\.md$/, '');
   const parts = relPath.split('/');
-  const lifecycle = parts[0];
-  const cls = parts[1] || 'architecture';
+  const lifecycle = LIFECYCLE_IDS[parts[0]] ?? parts[0];
+  const cls = CLASS_IDS[parts[1]] || parts[1] || 'architecture';
 
   let title = slug;
   let status = lifecycle;
@@ -916,7 +919,7 @@ function parseNote(raw, relPath, slugToId = new Map()) {
   const dMatch = /^(\d{4}-\d{2}-\d{2})/.exec(slug);
   if (dMatch) date = dMatch[1];
 
-  const h1Match = /^# Agent Note[^:：]*[:：]\s*(.*)$/m.exec(raw);
+  const h1Match = /^# (?:决策笔记|Agent Note)[:：]\s*(.*)$/m.exec(raw);
   if (h1Match) title = h1Match[1].trim();
 
   function extractSection(pattern) {
@@ -926,9 +929,9 @@ function parseNote(raw, relPath, slugToId = new Map()) {
   }
 
   const problem = extractSection('Problem|问题');
-  const decision = extractSection('Decision|Proposal|决策|提案');
-  const alternatives = extractSection('Alternatives considered|曾考虑的替代方案|曾考虑的备选');
-  const consequences = extractSection('Consequences|后果');
+  const decision = extractSection('Decision|Proposal|决定|决策|方案|提议|提案');
+  const alternatives = extractSection('Alternatives considered|备选方案|替代方案|曾考虑的替代方案|曾考虑的备选');
+  const consequences = extractSection('Consequences|代价与收益|后果');
 
   const links = [];
   for (const m of raw.matchAll(/\]\(([^)]+\.md)\)/g)) {
@@ -1270,7 +1273,7 @@ function renderAlternatives() {
     const altContent = n.alternatives;
 
     if (n.lifecycle === 'rejected') {
-      const crux = (n.rawBody || '').split('\n')[2]?.replace(/Status:\s*rejected\s*[—–-]/, '').trim() || n.problem || '审慎否决，防止重犯。';
+      const crux = (n.rawBody || '').split('\n')[2]?.replace(/^(?:Status:\s*rejected|状态[:：]\s*已否决)\s*[—–-]\s*/, '').trim() || n.problem || '审慎否决，防止重犯。';
       altItems.push({
         nodeId: n.id,
         title,

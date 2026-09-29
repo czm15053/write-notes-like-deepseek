@@ -9,8 +9,8 @@ import { resolve } from "node:path";
 import { agentNoteRoot, walkAgentNoteTree } from "./agent-note-tree.ts";
 
 const STATUS: Record<string, RegExp> = {
-  proposed: /^Status: proposed$|^状态[:：] ?(?:proposed|已提议)$/,
-  implemented: /^Status: implemented$|^状态[:：] ?(?:implemented|已实现)$/,
+  proposed: /^Status: proposed$|^状态[:：] ?(?:proposed|已提议|提案)$/,
+  implemented: /^Status: implemented$|^状态[:：] ?(?:implemented|已实现|生效)$/,
   rejected: /^Status: rejected — .+$|^状态[:：] ?(?:rejected|已否决) — .+$/,
 };
 
@@ -24,7 +24,7 @@ const REQUIRED: Record<string, string[][]> = {
   ],
   implemented: [
     ["## Decision", "## 决定", "## 决策"],
-    ["## Consequences", "## 后果", "## 影响", "## 结果", "## 结果与代价", "## 影响与验证"],
+    ["## Consequences", "## 代价与收益", "## 后果", "## 影响", "## 结果", "## 结果与代价", "## 影响与验证"],
   ],
   rejected: [
     ["## Proposal", "## 提议", "## 方案", "## 提案"],
@@ -106,8 +106,8 @@ for (const note of notes) {
   for (let i = 0; i < lines.length; i++) if (isProseLine(src, i)) proseIdx.push(i);
   const prose = proseIdx.map((i) => lines[i]);
 
-  // Halfwidth or fullwidth colon (IME often inserts ：)
-  if (!/^# Agent Note[:：] ?\S/.test(lines[0] ?? "")) fail("line 1 must be `# Agent Note: <title>`");
+  // Halfwidth or fullwidth colon (IME often inserts ：); Chinese title prefix 决策笔记 also accepted
+  if (!/^# Agent Note[:：] ?\S|^# 决策笔记[:：] ?\S/.test(lines[0] ?? "")) fail("line 1 must be `# Agent Note: <title>` (CN: `# 决策笔记：<标题>`)");
   if (lines[1] !== "") fail("line 2 must be blank");
 
   const re = STATUS[note.lifecycle];

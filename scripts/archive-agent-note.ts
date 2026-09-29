@@ -6,7 +6,7 @@
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, relative, resolve } from "node:path";
-import { agentNoteRoot, AGENT_NOTE_CLASSES, walkAgentNoteTree } from "./agent-note-tree.ts";
+import { agentNoteRoot, CLASS_DIR_IDS, LIFECYCLE_DIR_IDS, walkAgentNoteTree } from "./agent-note-tree.ts";
 
 const args = process.argv.slice(2);
 const targetArg = args[0];
@@ -40,13 +40,15 @@ if (!existsSync(targetPath)) {
 const relToRoot = relative(agentNoteRoot, targetPath).replace(/\\/g, "/");
 const segs = relToRoot.split("/");
 
-if (segs[0] !== "implemented" || segs.length !== 3) {
-  console.error(`Error: only notes in .agents/notes/implemented/<class>/ can be archived (got: ${relToRoot})`);
+if (LIFECYCLE_DIR_IDS[segs[0] ?? ""] !== "implemented" || segs.length !== 3) {
+  console.error(`Error: only notes in .agents/notes/implemented/<class>/ (CN: 生效/<分类>/) can be archived (got: ${relToRoot})`);
   process.exit(1);
 }
 
+// archive folder follows the source language: archived/ for English trees, 归档/ for Chinese
+const archiveDirName = segs[0] === "生效" ? "归档" : "archived";
 const [, cls, filename] = segs;
-if (!AGENT_NOTE_CLASSES.includes(cls as any)) {
+if (CLASS_DIR_IDS[cls] === undefined) {
   console.error(`Error: unknown class "${cls}"`);
   process.exit(1);
 }
@@ -54,7 +56,7 @@ if (!AGENT_NOTE_CLASSES.includes(cls as any)) {
 // 1. Read and update content with Archived line
 const raw = readFileSync(targetPath, "utf8");
 const lines = raw.split("\n");
-const statusIdx = lines.findIndex((l) => l === "Status: implemented");
+const statusIdx = lines.findIndex((l) => /^Status: implemented$|^状态[:：] ?(?:implemented|已实现|生效)$/.test(l));
 if (statusIdx === -1) {
   console.error("Error: note must contain `Status: implemented` to be archived");
   process.exit(1);
@@ -66,25 +68,27 @@ const nowLocal = new Date();
 const pad2 = (n: number) => String(n).padStart(2, "0");
 const today = `${nowLocal.getFullYear()}-${pad2(nowLocal.getMonth() + 1)}-${pad2(nowLocal.getDate())}`;
 // DSH contract: `Archived:` sits immediately below `Status:` (L3/L4).
-if (!lines.some((l) => l.startsWith("Archived:"))) {
-  lines.splice(statusIdx + 1, 0, `Archived: ${today}`);
+// Chinese trees get the localized 归档于： line instead.
+const archiveStamp = archiveDirName === "归档" ? `归档于：${today}` : `Archived: ${today}`;
+if (!lines.some((l) => l.startsWith("Archived:") || l.startsWith("归档于"))) {
+  lines.splice(statusIdx + 1, 0, archiveStamp);
 }
 
 if (successorPath) {
   const rel = relative(agentNoteRoot, successorPath).replace(/\\/g, "/");
   successorRel = rel;
   const successorSegs = rel.split("/");
-  if (successorSegs.length !== 3 || !["proposed", "implemented", "rejected"].includes(successorSegs[0] ?? "")) {
+  if (successorSegs.length !== 3 || LIFECYCLE_DIR_IDS[successorSegs[0] ?? ""] === undefined || successorSegs[0] === "archived" || successorSegs[0] === "归档") {
     console.error(`Error: --superseded-by target must be an active note in {lifecycle}/{class}/ (got: ${rel})`);
     process.exit(1);
   }
 }
 
-const oldTitle = (lines[0] ?? "").replace(/^# Agent Note[:：] ?/, "").trim() || basename(filename, ".md");
+const oldTitle = (lines[0] ?? "").replace(/^# (?:Agent Note|决策笔记)[:：] ?/, "").trim() || basename(filename, ".md");
 const updatedContent = lines.join("\n");
 
 // 2. Determine archived destination
-const archivedDir = join(agentNoteRoot, "archived", cls);
+const archivedDir = join(agentNoteRoot, archiveDirName, cls);
 mkdirSync(archivedDir, { recursive: true });
 const archivedPath = join(archivedDir, filename);
 
@@ -96,10 +100,13 @@ if (existsSync(archivedPath)) {
 
 writeFileSync(targetPath, updatedContent, "utf8");
 renameSync(targetPath, archivedPath);
-console.log(`Moved: ${relToRoot} -> archived/${cls}/${filename}`);
+console.log(`Moved: ${relToRoot} -> ${archiveDirName}/${cls}/${filename}`);
 
-// 3. Update archived/manifest.json with SHA-256 seal
+// 3. Update archived/manifest.json with SHA-256 seal.
+// The manifest always lives under archived/ (single registry) even when the
+// archived note itself goes to the Chinese 归档/ folder; keys carry their own prefix.
 const manifestPath = join(agentNoteRoot, "archived", "manifest.json");
+mkdirSync(join(agentNoteRoot, "archived"), { recursive: true });
 interface Manifest {
   version: 1;
   files: Record<string, string>;
@@ -113,7 +120,7 @@ if (existsSync(manifestPath)) {
   }
 }
 
-const newArchivedRel = `archived/${cls}/${filename}`;
+const newArchivedRel = `${archiveDirName}/${cls}/${filename}`;
 const sha256 = `sha256:${createHash("sha256").update(readFileSync(archivedPath)).digest("hex")}`;
 manifest.files[newArchivedRel] = sha256;
 

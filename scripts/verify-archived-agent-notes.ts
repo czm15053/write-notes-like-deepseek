@@ -8,7 +8,7 @@
  */
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { agentNoteRoot } from "./agent-note-tree.ts";
 
@@ -17,35 +17,39 @@ const errors: string[] = [];
 const warnings: string[] = [];
 const fail = (msg: string) => { errors.push(msg); };
 
-// --- collect archived files (skip accidental .zh.md)
-const archivedDir = join(agentNoteRoot, "archived");
+// --- collect archived files (skip accidental .zh.md); English and Chinese archive folders both accepted
+const ARCHIVE_DIRS = ["archived", "归档"];
 const files: string[] = [];
-function scan(dir: string) {
+function scan(dir: string, prefix: string) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     if (entry.name.startsWith(".")) continue;
     const full = join(dir, entry.name);
-    if (entry.isDirectory()) scan(full);
+    if (entry.isDirectory()) scan(full, prefix);
     else if (entry.isFile() && entry.name.endsWith(".md") && !entry.name.endsWith(".zh.md")) {
-      files.push(relative(archivedDir, full).split("\\").join("/"));
+      files.push(`${prefix}/${relative(join(agentNoteRoot, prefix), full).split("\\").join("/")}`);
     }
   }
 }
-if (existsSync(archivedDir)) scan(archivedDir);
+for (const dir of ARCHIVE_DIRS) {
+  if (existsSync(join(agentNoteRoot, dir))) scan(join(agentNoteRoot, dir), dir);
+}
 
 // --- head layout: L1 title / L2 blank / L3 Status / L4 Archived / L5 blank
-const TITLE_RE = /^# Agent Note[:：] ?\S/;
-const ARCHIVED_RE = /^Archived: \d{4}-\d{2}-\d{2}$/;
-for (const rel of files) {
-  const lines = readFileSync(join(archivedDir, rel), "utf8").replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n").split("\n");
-  if (!TITLE_RE.test(lines[0] ?? "")) fail(`${rel} — line 1 must be \`# Agent Note: <title>\``);
-  if (lines[1] !== "") fail(`${rel} — line 2 must be blank`);
-  if (lines[2] !== "Status: implemented") fail(`${rel} — line 3 must be \`Status: implemented\``);
-  if (!ARCHIVED_RE.test(lines[3] ?? "")) fail(`${rel} — line 4 must be \`Archived: YYYY-MM-DD\` immediately below Status`);
-  if (lines[4] !== "") fail(`${rel} — line 5 must be blank after Archived`);
+const TITLE_RE = /^# Agent Note[:：] ?\S|^# 决策笔记[:：] ?\S/;
+const ARCHIVED_RE = /^Archived: \d{4}-\d{2}-\d{2}$|^归档于[:：]\d{4}-\d{2}-\d{2}$/;
+const LIVE_STATUS_RE = /^Status: implemented$|^状态[:：] ?(?:implemented|已实现|生效)$/;
+for (const key of files) {
+  const lines = readFileSync(join(agentNoteRoot, key), "utf8").replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n").split("\n");
+  const rel = key.split("/").slice(1).join("/");
+  if (!TITLE_RE.test(lines[0] ?? "")) fail(`${key} — line 1 must be \`# Agent Note: <title>\``);
+  if (lines[1] !== "") fail(`${key} — line 2 must be blank`);
+  if (!LIVE_STATUS_RE.test(lines[2] ?? "")) fail(`${key} — line 3 must be \`Status: implemented\``);
+  if (!ARCHIVED_RE.test(lines[3] ?? "")) fail(`${key} — line 4 must be \`Archived: YYYY-MM-DD\` immediately below Status`);
+  if (lines[4] !== "") fail(`${key} — line 5 must be blank after Archived`);
 }
 
 // --- manifest seals
-const manifestPath = join(archivedDir, "manifest.json");
+const manifestPath = join(agentNoteRoot, "archived", "manifest.json");
 interface Manifest { version: 1; files: Record<string, string>; }
 let manifest: Manifest = { version: 1, files: {} };
 if (existsSync(manifestPath)) {
@@ -61,8 +65,7 @@ if (existsSync(manifestPath)) {
 const sealOf = (relFromRoot: string) =>
   `sha256:${createHash("sha256").update(readFileSync(join(agentNoteRoot, relFromRoot))).digest("hex")}`;
 
-for (const rel of files) {
-  const key = `archived/${rel}`;
+for (const key of files) {
   const entry = manifest.files[key];
   if (!entry) {
     if (isWrite) {
@@ -118,6 +121,8 @@ if (errors.length) {
 
 if (isWrite) {
   const sorted = Object.fromEntries(Object.entries(manifest.files).sort(([a], [b]) => a.localeCompare(b)));
+  // manifest always lives under archived/; create it even for Chinese-only trees (归档/)
+  mkdirSync(join(agentNoteRoot, "archived"), { recursive: true });
   writeFileSync(manifestPath, JSON.stringify({ version: 1, files: sorted }, null, 2) + "\n", "utf8");
 }
 
