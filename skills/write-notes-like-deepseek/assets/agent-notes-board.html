@@ -722,7 +722,7 @@
       <select id="select-status"><option value="">状态：全部</option></select>
       <select id="select-class"><option value="">分类：全部</option></select>
       <select id="select-sort">
-        <option value="new">排序：最新优先</option>
+        <option value="new" selected>排序：最新优先</option>
         <option value="old">排序：最早优先</option>
         <option value="cites">排序：引用最多</option>
       </select>
@@ -1024,6 +1024,14 @@ async function scanDirectory(rootHandle) {
   return notes;
 }
 
+// 排序键必须构成全序：date 相同的笔记若只按 date 排，顺序会退回到目录扫描顺序，
+// 而扫描顺序随文件增删变化，导致自动热同步后同一批笔记莫名重排。用唯一 id 兜底保证顺序稳定。
+function compareNewestFirst(a, b) {
+  const byDate = (b.date || '').localeCompare(a.date || '');
+  if (byDate !== 0) return byDate;
+  return (b.id || '').localeCompare(a.id || '');
+}
+
 function ingestDataset(notes) {
   Core.nodes = notes;
   Core.byId.clear();
@@ -1043,7 +1051,7 @@ function ingestDataset(notes) {
     });
   });
 
-  Core.nodes.sort((a, b) => (b.date || '0000').localeCompare(a.date || '0000'));
+  Core.nodes.sort(compareNewestFirst);
 
   document.getElementById('chip-total-count').textContent = `${notes.length} 项`;
   document.getElementById('deck-onboarding').style.display = notes.length ? 'none' : 'flex';
@@ -1153,7 +1161,7 @@ function renderBaseline() {
 }
 
 function renderTimeline() {
-  const allDatedNodes = [...Core.nodes].filter(n => n.date).sort((a, b) => b.date.localeCompare(a.date));
+  const allDatedNodes = [...Core.nodes].filter(n => n.date).sort(compareNewestFirst);
 
   // 1. 统计全部月份
   const monthsMap = new Map();
@@ -1345,8 +1353,8 @@ function renderDirectory() {
     return true;
   });
 
-  if (Core.sortMode === 'new') list.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-  else if (Core.sortMode === 'old') list.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+  if (Core.sortMode === 'new') list.sort(compareNewestFirst);
+  else if (Core.sortMode === 'old') list.sort((a, b) => compareNewestFirst(b, a));
   else if (Core.sortMode === 'cites') list.sort((a, b) => (Core.inCount.get(b.id) || 0) - (Core.inCount.get(a.id) || 0));
 
   document.getElementById('matrix-matched-count').textContent = `匹配 ${list.length} 条`;
